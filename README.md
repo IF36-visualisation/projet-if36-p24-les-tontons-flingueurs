@@ -1,14 +1,25 @@
-# Proposition
+![Image du Dataset](https://i.imgur.com/tPHIgmR.png)
+
+
+
+# Introduction
+Le dataset que nous avons choisi provient de [Kaggle](https://www.kaggle.com/datasets/catherinerasgaitis/mxmh-survey-results/data) et vise à identifier les corrélations qui peuvent exister entre la musique et la santé mentale autodéclarée d'un individu, que ce soit à travers l'écoute de styles particuliers, par la pratique d'un instrument ou encore par la composition.
+
+Nous avons choisi ce dataset en raison de sa pertinence pour les analyses que nous voulons mener, tout en offrant la possibilité d'explorer les liens potentiels entre la santé mentale et la musique, étant donné notre intérêt marqué pour celle-ci.
+
 
 ## Données
-Le dataset vise à identifier les corrélations qui existent entre la musique et la santé mentale autodéclarée d'un individu, que ce soit à travers l'écoute de styles particuliers, par la pratique d'un instrument ou encore par la composition.
-
+### Source
 La collecte des données a été gérée via un formulaire Google. Les répondants n'étaient pas limités par l'âge ou le lieu.
 
 Le formulaire a été publié sur divers forums Reddit, serveurs Discord et plateformes de médias sociaux. Des affiches ont également été utilisées pour annoncer le formulaire dans les bibliothèques, les parcs et autres lieux publics.
 
 Le formulaire était relativement bref afin que les répondants soient plus susceptibles de terminer le sondage. Les questions « plus difficiles » (telles que le BPM) sont restées facultatives pour la même raison.
 
+### Format
+Les données sont fournies dans un seul fichier au format CSV.
+
+### Description
 Ainsi, nous avons un total de 736 observations pour 33 features.
 
 5 d'entre-elles sont de type booléen :
@@ -32,7 +43,7 @@ Ainsi, nous avons un total de 736 observations pour 33 features.
 1 de type date :
 * Timestamp (date de soumission de la réponse au formulaire)
 
-et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles étaient limité) :
+et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles était limité) :
 * Primary streaming (plateforme d'écoute principale)
 * Fav genre
 * Music effect (choix entre improve, no effect et worsen)
@@ -56,8 +67,9 @@ et les 20 restantes sont de type string et sont ordonnables (et le nombre de ré
 
 On retrouve réellement deux sous-groupes de features : les fréquences d'écoutes et les troubles mentaux.
 
+
 ## Plan d'analyse
-Il y a une grande question que l'on se pose qui est "La musique en générale est-elle corrélée à la santé mentale ?", que se soit en écoutant, jouant ou composant. Cette question en implique d'autres plus spécifiques. La plus évidente sûrement est de se demander si il y a corrélation entre le nombre d'heures d'écoute et la santé mentale. Logiquement, on s'attend à ce que la réponse soit positive, jusqu'à un certain nombre d'heures d'écoute.
+Il y a une grande question que l'on se pose qui est : "La musique en générale est-elle corrélée à la santé mentale ?" ; que se soit en écoutant, jouant ou composant. Cette question en implique d'autres plus spécifiques. La plus évidente sûrement est de se demander si il y a une corrélation entre le nombre d'heures d'écoute et la santé mentale. Logiquement, on s'attend à ce que la réponse soit positive, jusqu'à un certain nombre d'heures d'écoute.
 
 Également, on peut se demander si des styles de musiques sont plus corrélés que d'autres avec une meilleure santé, ou encore avec le BPM (bien que dans les deux cas, on se doute qu'on ne trouvera pas de corrélation). En fait on peut se poser la question de l'existence d'un lien entre la plupart des features du dataset (jouer, composer, en travaillant, en langue étrangère, la curiosité). Aussi on peut regarder si certains problèmes mentaux sont plus corrélés à la musique que d'autres.
 
