@@ -1,0 +1,35 @@
+```
+output: pdf_document
+```
+
+test
+
+```{r}
+library(dplyr)
+library(ggcorrplot)
+library(readr)
+```
+
+```{r}
+data <- read_csv("../data/mxmh_survey_results.csv", show_col_types = FALSE)
+columns <- colnames(data)
+map_function <- function(x) {
+  case_when(
+    x == "Never" ~ 0,
+    x == "Rarely"~ 1,
+    x == "Sometimes"~ 2,
+    x == "Very frequently"~ 3,
+    TRUE ~ NA_integer_  # If none of the conditions are met, return NA
+  )
+}
+frequency_columns = columns[grep("^Frequency", columns)]
+for (col in frequency_columns) {
+  data = mutate(data, {{col}} := map_function(data[col]))
+}
+print(data)
+```
+
+```{r}
+a <- data[frequency_columns]
+ggcorrplot(as.data.frame(cor(as.matrix(a))),  type = "lower")
+```
