@@ -29,7 +29,7 @@ for (col in frequency_columns) {
 print(data)
 ```
 
-```{r}
+```{r fig.align = center, fig.width = 14}
 a <- data[frequency_columns]
-ggcorrplot(as.data.frame(cor(as.matrix(a))),  type = "lower")
+ggcorrplot(as.data.frame(cor(as.matrix(a))),  type = "lower", )
 ```
