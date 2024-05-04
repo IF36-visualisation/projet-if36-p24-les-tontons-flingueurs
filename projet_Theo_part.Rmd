@@ -1,0 +1,198 @@
+---
+title: "Projet"
+author: "SanKson7"
+date: "2024-05-05"
+output: html_document
+editor_options: 
+  chunk_output_type: inline
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Début de ma partie
+
+### 0. Données.
+
+```{r ggplot2}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(tibble)
+library(gridExtra)
+library("viridis")
+df <- read.csv("data/mxmh_survey_results.csv")
+```
+
+### 1. Question
+
+La question que nous allons nous poser ici est la suivante : Quelles sont les données qui composent le dataset ? Pour cela, nous allons réaliser quelques analyses de base et ainsi réaliser plusieurs graphiques pour visualiser les données.
+
+```{r ggplot2}
+
+
+# Nombre de réponses au sondage
+nrow(df)
+
+
+# Moyenne d'âge des répondants par catégorie d'âge (Age)
+enfant <- df %>% filter(Age < 18) %>% nrow()
+jeune <- df %>% filter(Age >= 18 & Age < 31) %>% nrow()
+adulte <- df %>% filter(Age >= 31 & Age < 51) %>% nrow()
+senior <- df %>% filter(Age >= 51) %>% nrow()
+
+df_age <- data.frame(
+  categorie = c("Enfant (-18 ans)", "Jeune (18-30 ans)", "Adulte (31-50 ans)", "Senior (51+ ans)"),
+  nombre = c(enfant, jeune, adulte, senior)
+)
+
+age <- ggplot(df_age, aes(x = categorie, y = nombre, fill = categorie)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Répartition des répondants par catégorie d'âge", x = "Catégorie d'âge", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Plateforme la plus utilisée (Primary.streaming.service)
+df_platform <- df %>% 
+  group_by(Primary.streaming.service) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+df_platform$Primary.streaming.service <- factor(df_platform$Primary.streaming.service, levels = c("Spotify", "Apple Music", "Pandora", "YouTube Music", "Other streaming service", "I do not use a streaming service."), labels = c("Spotify", "Apple Music", "Pandora", "YouTube Music", "Autre service de streaming", "Je n'utilise pas de service de streaming."))
+
+platforms <- ggplot(df_platform, aes(x = reorder(Primary.streaming.service, -count), y = count, fill = Primary.streaming.service)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Plateforme de streaming la plus utilisée", x = "Plateforme de streaming", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Temps passé à écouter de la musique par catégorie (Hours.per.day)
+little <- df %>% filter(Hours.per.day < 2) %>% nrow()
+medium <- df %>% filter(Hours.per.day >= 2 & Age < 6) %>% nrow()
+hard <- df %>% filter(Hours.per.day >= 6 & Age < 11) %>% nrow()
+expert <- df %>% filter(Hours.per.day >= 11) %>% nrow()
+
+df_hours <- data.frame(
+  categorie = c("-2h", "2h-5h", "6h-10h", "10h+"),
+  nombre = c(enfant, jeune, adulte, senior)
+)
+
+hours <- ggplot(df_hours, aes(x = categorie, y = nombre, fill = categorie)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Temps passé à écouter de la musique", x = "Heures par jour", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Genres de musique favoris (Fav.genre)
+df_genre <- df %>% 
+  group_by(Fav.genre) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+genres <- ggplot(df_genre, aes(x = reorder(Fav.genre, -count), y = count, fill = Fav.genre)) +
+  geom_bar(stat = "identity") +
+  theme_minimal() +
+  labs(title = "Genres de musique favoris", x = "Genre de musique", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Fréquence d'écoute de musique par genre (Frequency..*.)
+df_frequency <- df %>% 
+  select(starts_with("Frequency")) %>% 
+  gather(key = "genre", value = "frequency") %>% 
+  group_by(genre, frequency) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+df_frequency$frequency <- factor(df_frequency$frequency, levels = c("Never", "Rarely", "Sometimes", "Very frequently"), labels = c("Jamais", "Rarement", "Parfois", "Très fréquemment"))
+
+df_frequency$genre <- gsub("Frequency..", "", df_frequency$genre)
+df_frequency$genre <- gsub("\\.$", "", df_frequency$genre)
+
+frequency <- ggplot(df_frequency, aes(x = genre, y = count, fill = as.factor(frequency))) +
+  geom_bar(stat = "identity", position = "dodge") +
+  theme_minimal() +
+  labs(title = "Fréquence d'écoute de musique par genre", x = "Genre de musique", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right", axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+# Effets de la musique (Music.effects)
+df_effects <- df %>% 
+  group_by(Music.effects) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+df_effects$Music.effects <- factor(df_effects$Music.effects, levels = c("Improve", "No effect", "Worsen"), labels = c("Améliore", "Aucun effet", "Empire"))
+
+effects <- ggplot(df_effects, aes(x = "", y = count, fill = Music.effects)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  theme_minimal() +
+  labs(title = "Effets de la musique", x = "", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right")
+
+
+# Langues étrangères (Foreign.languages)
+df_languages <- df %>% 
+  group_by(Foreign.languages) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+df_languages$Foreign.languages <- factor(df_languages$Foreign.languages, levels = c("Yes", "No"), labels = c("Oui", "Non"))
+
+foreign <- ggplot(df_languages, aes(x = "", y = count, fill = Foreign.languages)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  theme_minimal() +
+  labs(title = "Langues étrangères", x = "", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right")
+
+
+# Pendant le travail (While.working)
+df_work <- df %>% 
+  group_by(While.working) %>% 
+  summarise(count = n()) %>% 
+  arrange(desc(count))
+
+df_work$While.working <- factor(df_work$While.working, levels = c("Yes", "No"), labels = c("Oui", "Non"))
+
+working <- ggplot(df_work, aes(x = "", y = count, fill = While.working)) +
+  geom_bar(stat = "identity", width = 1) +
+  coord_polar("y") +
+  theme_minimal() +
+  labs(title = "Pendant le travail", x = "", y = "Nombre de répondants", fill = "Légende") +
+  theme(legend.position = "right")
+
+
+```
+```{r ggplot2}
+
+# Afficher les graphiques à la suite
+age
+platforms
+hours
+genres
+frequency
+effects
+foreign
+working
+
+```
+
+Nous avons 736 répondants dans ce dataset.
+
+Nous avons volontairement exclu certaines des caractéristiques car nous nous y pencherons plus en détails dans les prochaines questions, notamment à propos de la santé mentale (dépression, anxiété, insomnie, OCD) ainsi que les BPM.
+En effet, ces caractéristiques sont plus complexes à analyser et nécessitent des analyses plus poussées.
+
+En ce qui concerne les graphiques que vous avez pu voir, nous contatons une moyenne d'âge des répondants plutôt jeune, ce qui était prévisible.
+Nous constatons également que Spotify est la plateforme de streaming la plus utilisée.
+La majorité des répondants écoutent de la musique entre 2 et 5 heures par jour.
+Le genre de musique favori qui resort le plus est le Rock.
+Enfin, nous constatons que la musique a un effet positif sur la majorité des répondants, qu'ils écoutent de la musique dans des langues étrangères et pendant le travail.
+
+## Fin de ma partie
