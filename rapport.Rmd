@@ -101,6 +101,15 @@ library(FactoMineR)
 library(factoextra)
 df <- read_csv("data/mxmh_survey_results.csv", show_col_types = FALSE)
 frequency_columns <- colnames(df)[grep("^Frequency", colnames(df))]
+remove_frequency_prefix <- function(dataframe) {
+  mapper <- function(col_name) {
+    col_name <- sub("^Frequency \\[", "", col_name)
+    sub("]$", "", col_name)
+  }
+  colnames(dataframe) <- sapply(colnames(dataframe), mapper)
+  return(dataframe)
+}
+
 ```
 
 ### 1) Quelles sont les données qui composent le dataset ?
@@ -381,15 +390,13 @@ map_function <- function(x) {
     TRUE ~ NA_integer_  # Si les conditions ne sont pas satisfaites, on retourne NA.
   )
 }
-df_frequency_as_number = df[frequency_columns]
+df_frequency_as_number <- df[frequency_columns]
 for (col in frequency_columns) {
-  df_frequency_as_number = mutate(df_frequency_as_number, {{col}} := map_function(df[col]))
+  df_frequency_as_number <- mutate(df_frequency_as_number, {{col}} := map_function(df_frequency_as_number[col]))
 }
-remove_frequency_prefix <- function(col_name) {
-  col_name <- sub("^Frequency \\[", "", col_name)
-  sub("]$", "", col_name)
-}
-ggcorrplot(as.data.frame(cor(as.matrix(df_frequency_as_number))),  type = "lower", lab = TRUE) +
+df_frequency_as_number <- remove_frequency_prefix(df_frequency_as_number)
+correlation_matrix <- as.data.frame(cor(as.matrix(df_frequency_as_number)))
+ggcorrplot(correlation_matrix,  type = "lower", lab = TRUE) +
   ggtitle("Corrélation entre les fréquences d'écoute des différents styles de musique")
 ```
 
