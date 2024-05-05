@@ -114,8 +114,6 @@ remove_frequency_prefix <- function(dataframe) {
 
 ### 1) Quelles sont les données qui composent le dataset ?
 
-// Partie Théo
-
 <br>
 
 #### **Analyse**
@@ -261,7 +259,7 @@ working <- ggplot(df_work, aes(x = "", y = count, fill = `While working`)) +
   theme(legend.position = "right")
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align = "center"}
 
 # Afficher les graphiques à la suite
 age
@@ -322,7 +320,7 @@ df_outliers <- df %>% filter(`Hours per day` > (Q1H - 1.5*IQRH) & `Hours per day
 
 ```
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.align = "center"}
 
 # Groupe 1 : ne jouent pas d'un instrument et ne composent pas de musique
 
@@ -380,7 +378,7 @@ Ainsi, on peut dire que jouer d'un instrument ou composer de la musique semble a
 
 Ce dataset peut aussi nous permettre de nous demander si 2 styles de musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un est corrélée positivement (ou négativement) à l'écoute de l'autre. Pour cela, on peut représenter les coefficients de corrélation entre chaque style dans un tableau.
 
-```{r fig.align = "center", fig.width = 10, fig.height = 10}
+```{r, echo=FALSE, fig.align = "center", fig.width = 10, fig.height = 10}
 map_function <- function(x) {
   case_when(
     x == "Never" ~ 0,
@@ -402,7 +400,7 @@ ggcorrplot(correlation_matrix,  type = "lower", lab = TRUE) +
 
 La lecture de ce graphe est assez difficile car les informations sont assez peu visuelles. Nous allons donc faire une ACM. Une ACM (Analyse en Composantes Principales) est une méthode statistique utilisée pour réduire la dimensionnalité des données en identifiant les motifs et les relations entre les variables, afin de représenter ces données de manière plus concise et informative. Nous n'allons ici pas représenter les données (les personnes ayant répondu au sondage), mais les variables, qui peuvent aussi être placées dans un repère à l'aide de cette méthode. Plus 2 variables sont proches sur le graphe, plus elles ont de chance d'avoir la même valeur pour 2 individus distincts. Plus elles sont éloignés, moins il y a d'individus pour lesquels la valeur de ces variables est la même. Autrement dit, ce graphe permet de montrer la corrélation (signée) entre les différents styles de musique.
 
-```{r fig.align = "center"}
+```{r, echo=FALSE, fig.align = "center"}
 df_frequency_without_prefix = df[frequency_columns]
 # On enlève le préfixe "Frequency" au nom des variables
 remove_frequency_prefix <- function(col_name) {
