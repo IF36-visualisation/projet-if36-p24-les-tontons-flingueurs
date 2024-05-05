@@ -3,8 +3,8 @@ title: "Projet IF36"
 author: "Les tontons flingueurs"
 date: "2024-05-04"
 output:
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -393,12 +393,12 @@ for (col in frequency_columns) {
   df_frequency_as_number <- mutate(df_frequency_as_number, {{col}} := map_function(df_frequency_as_number[col]))
 }
 df_frequency_as_number <- remove_frequency_prefix(df_frequency_as_number)
-correlation_matrix <- as.data.frame(cor(as.matrix(df_frequency_as_number)))
-ggcorrplot(correlation_matrix,  type = "lower", lab = TRUE) +
+correlation_df <- as.data.frame(cor(as.matrix(df_frequency_as_number)))
+ggcorrplot(correlation_df,  type = "lower", lab = TRUE) +
   ggtitle("Corrélation entre les fréquences d'écoute des différents styles de musique")
 ```
 
-La lecture de ce graphe est assez difficile car les informations sont assez peu visuelles. Nous allons donc faire une ACM. Une ACM (Analyse en Composantes Principales) est une méthode statistique utilisée pour réduire la dimensionnalité des données en identifiant les motifs et les relations entre les variables, afin de représenter ces données de manière plus concise et informative. Nous n'allons ici pas représenter les données (les personnes ayant répondu au sondage), mais les variables, qui peuvent aussi être placées dans un repère à l'aide de cette méthode. Plus 2 variables sont proches sur le graphe, plus elles ont de chance d'avoir la même valeur pour 2 individus distincts. Plus elles sont éloignés, moins il y a d'individus pour lesquels la valeur de ces variables est la même. Autrement dit, ce graphe permet de montrer la corrélation (signée) entre les différents styles de musique.
+La lecture de ce graphe est assez difficile car les informations sont assez peu visuelles. Nous allons donc faire une ACM. L'Analyse des Correspondances Multiples (ACM) est une méthode statistique utilisée pour explorer les relations entre les catégories de plusieurs variables qualitatives. Elle réduit la dimensionnalité des données et les représente dans un espace de dimension plus faible, facilitant ainsi leur interprétation visuelle. C'est une technique utile pour analyser des tableaux de contingence et découvrir des associations entre les différentes catégories des variables étudiées. Plus 2 variables sont proches sur le graphe, plus elles ont de chance d'avoir la même valeur pour 2 individus distincts. Plus elles sont éloignés, moins il y a d'individus pour lesquels la valeur de ces variables est la même. Autrement dit, ce graphe permet de montrer la corrélation (signée) entre les différents styles de musique.
 
 ```{r, echo=FALSE, fig.align = "center"}
 df_frequency_without_prefix = df[frequency_columns]
@@ -428,7 +428,7 @@ ggplot(data, aes(x = style, y = precision)) +
 
 On voit donc bien qu'on peut grouper certains styles. Par exemple, les personnes écoutant du rap écoutent souvent du R&B et du hip hop, et les personnes n'écoutant pas de rock n'écouteront pas de métal. Certains styles sont plutôt à part, comme la K pop, dont la fréquence d'écoute n'a que peu de corrélation avec celle des autres styles. Cela se vérifie dans le tableau précédent.
 
-Ce graphique ne doit cependant que nous donner des pistes de recherche, il ne faut pas tirer de conclusions avec : il n'explique que 13.1% de la variance, il n'est donc pas du tout exact. Certaines variables sont moins bien représentées que d'autres. Le deuxième graphique montre cela. Il n'est donc pas vraiment possible de tirer de conclusions avec uniquement ce graphique, mais il est tout de même très efficace pour nous donner une idée de la corrélation entre chaque variable.
+Ce graphique ne doit cependant que nous donner des pistes de recherche, il ne faut pas tirer de conclusions avec : il n'explique que 13.1% de la variance, il n'est donc pas du tout exact. Certaines variables sont moins bien représentées que d'autres. En effet, pour avoir un graphe parfait, il faudrait le représenter dans un nombre de dimensions élevées. C'est évidemment impossible (sans compromettre la qualité de la lecture), on réduit donc l'espace à deux dimensions. Mais cela nous fait perdre des informations, et pour certaines variables (Gospel, Classical, Video game music), beaucoup d'informations seront perdues, tandis que pour d'autres (Hip hop, R&B, Rap), la majorité seront conservées. Le deuxième graphique montre donc cela. Il n'est donc pas vraiment possible de tirer de conclusions avec uniquement ce graphique, mais il est tout de même très efficace pour nous donner une idée de la corrélation entre chaque variable.
 
 Comme on pouvait s'y attendre, il existe donc bien des corrélations entre les fréquence d'écoute des différents styles de musique. Le meilleur exemple est celle du rap et celle du hip hop, avec un coefficient de corrélation de 0.78.
 

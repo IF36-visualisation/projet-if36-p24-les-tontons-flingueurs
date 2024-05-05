@@ -1,0 +1,499 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math} % this also loads fontspec
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else
+  % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Projet IF36},
+  pdfauthor={Les tontons flingueurs},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+
+\title{Projet IF36}
+\author{Les tontons flingueurs}
+\date{2024-05-04}
+
+\begin{document}
+\maketitle
+
+\includegraphics{https://i.imgur.com/tPHIgmR.png}
+
+\hypertarget{introduction}{%
+\section{Introduction}\label{introduction}}
+
+Le dataset que nous avons choisi provient de
+\href{https://www.kaggle.com/datasets/catherinerasgaitis/mxmh-survey-results/data}{Kaggle}
+et vise à identifier les corrélations qui peuvent exister entre la
+musique et la santé mentale autodéclarée d'un individu, que ce soit à
+travers l'écoute de styles particuliers, par la pratique d'un instrument
+ou encore par la composition.
+
+Nous avons choisi ce dataset en raison de sa pertinence pour les
+analyses que nous voulons mener, tout en offrant la possibilité
+d'explorer les liens potentiels entre la santé mentale et la musique,
+étant donné notre intérêt marqué pour celle-ci.
+
+\hypertarget{donnuxe9es}{%
+\subsection{Données}\label{donnuxe9es}}
+
+\hypertarget{source}{%
+\subsubsection{Source}\label{source}}
+
+La collecte des données a été gérée via un formulaire Google. Les
+répondants n'étaient pas limités par l'âge ou le lieu.
+
+Le formulaire a été publié sur divers forums Reddit, serveurs Discord et
+plateformes de médias sociaux. Des affiches ont également été utilisées
+pour annoncer le formulaire dans les bibliothèques, les parcs et autres
+lieux publics.
+
+Le formulaire était relativement bref afin que les répondants soient
+plus susceptibles de terminer le sondage. Les questions « plus
+difficiles » (telles que le BPM) sont restées facultatives pour la même
+raison.
+
+\hypertarget{format}{%
+\subsubsection{Format}\label{format}}
+
+Les données sont fournies dans un seul fichier au format CSV.
+
+\hypertarget{description}{%
+\subsubsection{Description}\label{description}}
+
+Ainsi, nous avons un total de \textbf{736} observations pour \textbf{33}
+features.
+
+5 d'entre-elles sont de type booléen :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{While working} (écoute de la musique en travaillant /
+  étudiant)
+\item
+  \textbf{Instrumentalist} (régulièrement)
+\item
+  \textbf{Composer}
+\item
+  \textbf{Exploratory} (explore régulièrement de nouveaux artistes /
+  styles de musique)
+\item
+  \textbf{Foreign languages} (écoute régulièrement de la musique en
+  langue étrangère)
+\end{itemize}
+
+6 sont de type entier :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Age}
+\item
+  \textbf{BPM} (nombre de battements par minute du style de musique
+  favori)
+\item
+  \textbf{Anxiety} (échelle de 0 à 10)
+\item
+  \textbf{Depression} (de même)
+\item
+  \textbf{Insomnia} (de même)
+\item
+  \textbf{OCD} (de même)
+\end{itemize}
+
+1 de type flottant :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Hours per day} (de 0 à 24)
+\end{itemize}
+
+1 de type date :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Timestamp} (date de soumission de la réponse au formulaire)
+\end{itemize}
+
+et les 20 restantes sont de type string et sont ordonnables (et le
+nombre de réponses possibles était limité) :
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{Primary streaming} (plateforme d'écoute principale)
+\item
+  \textbf{Fav genre}
+\item
+  \textbf{Music effect} (choix entre improve, no effect et worsen)
+\item
+  \textbf{Frequency (Classical)} (choix entre never, rarely, sometimes
+  et very frequently)
+\item
+  \textbf{Frequency (Country)}
+\item
+  \textbf{Frequency (EDM)}
+\item
+  \textbf{Frequency (Folk)}
+\item
+  \textbf{Frequency (Gospel)}
+\item
+  \textbf{Frequency (Hip hop)}
+\item
+  \textbf{Frequency (Jazz)}
+\item
+  \textbf{Frequency (K pop)}
+\item
+  \textbf{Frequency (Latin)}
+\item
+  \textbf{Frequency (Lofi)}
+\item
+  \textbf{Frequency (Metal)}
+\item
+  \textbf{Frequency (Pop)}
+\item
+  \textbf{Frequency (R\&B)}
+\item
+  \textbf{Frequency (Rap)}
+\item
+  \textbf{Frequency (Rock)}
+\item
+  \textbf{Frequency (Video game)}
+\item
+  \textbf{Permission} (autorisation de rendre public la réponse, ainsi
+  il n'y a qu'une seule valeur : i understand)
+\end{itemize}
+
+On retrouve réellement deux sous-groupes de features : les fréquences
+d'écoutes et les troubles mentaux.
+
+\hypertarget{analyse}{%
+\subsection{Analyse}\label{analyse}}
+
+Il est important de noter que notre dataset est d'une part relativement
+petit, et d'autre part auto-déclaratif. Ainsi, les réponses peuvent être
+biaisées par la perception de la personne qui répond, et les conclusions
+que nous pourrons tirer ne seront pas nécessairement généralisables à
+l'ensemble de la population.
+
+\hypertarget{quelles-sont-les-donnuxe9es-qui-composent-le-dataset}{%
+\subsubsection{1) Quelles sont les données qui composent le dataset
+?}\label{quelles-sont-les-donnuxe9es-qui-composent-le-dataset}}
+
+\hypertarget{analyse-1}{%
+\paragraph{\texorpdfstring{\textbf{Analyse}}{Analyse}}\label{analyse-1}}
+
+Pour cela, nous allons réaliser quelques analyses de base et ainsi
+réaliser plusieurs graphiques pour visualiser les données.
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-1} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-2} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-3} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-4} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-5} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-6} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-7} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-2-8} \end{center}
+
+\hypertarget{conclusion}{%
+\paragraph{\texorpdfstring{\textbf{Conclusion}}{Conclusion}}\label{conclusion}}
+
+Nous avons 736 répondants dans ce dataset.
+
+Nous avons volontairement exclu certaines des caractéristiques car nous
+nous y pencherons plus en détails dans les prochaines questions,
+notamment à propos de la santé mentale (dépression, anxiété, insomnie,
+OCD) ainsi que les BPM. En effet, ces caractéristiques sont plus
+complexes à analyser et nécessitent des analyses plus poussées.
+
+En ce qui concerne les graphiques que vous avez pu voir, nous contatons
+une moyenne d'âge des répondants plutôt jeune, ce qui était prévisible.
+Nous constatons également que Spotify est la plateforme de streaming la
+plus utilisée. La majorité des répondants écoutent de la musique entre 2
+et 5 heures par jour. Le genre de musique favori qui ressort le plus est
+le Rock. Enfin, nous constatons que la musique a un effet positif sur la
+majorité des répondants, qu'ils écoutent de la musique dans des langues
+étrangères et pendant le travail.
+
+\hypertarget{est-ce-que-la-pratique-musicale-jouer-dun-instrument-ou-composer-de-la-musique-a-une-influence-le-temps-passuxe9-uxe0-uxe9couter-de-la-musique}{%
+\subsubsection{2) Est-ce que la pratique musicale (jouer d'un instrument
+ou composer de la musique) a une influence le temps passé à écouter de
+la musique
+?}\label{est-ce-que-la-pratique-musicale-jouer-dun-instrument-ou-composer-de-la-musique-a-une-influence-le-temps-passuxe9-uxe0-uxe9couter-de-la-musique}}
+
+\hypertarget{analyse-2}{%
+\paragraph{\texorpdfstring{\textbf{Analyse}}{Analyse}}\label{analyse-2}}
+
+Avant toute chose, puisque certaines personnes ont répondu qu'elles
+passaient plus de 18 heures par jour (ou moins de 30 minutes par jour) à
+écouter de la musique, nous avons décidé de gérer ces outliers à l'aide
+d'un écart interquartile.
+
+Pour répondre à la question, nous avons décidé de diviser les
+participants en 4 groupes :
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Ceux qui ne jouent pas d'un instrument et ne composent pas de musique
+  (441 personnes)
+\item
+  Ceux qui jouent d'un instrument mais ne composent pas de musique (141
+  personnes)
+\item
+  Ceux qui ne jouent pas d'un instrument mais composent de la musique
+  (29 personnes)
+\item
+  Ceux qui jouent d'un instrument et composent de la musique (82
+  personnes)
+\end{enumerate}
+
+Nous avons ensuite calculé la moyenne des heures passées à écouter de la
+musique pour chaque groupe avant de les comparer.
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-4-1} \end{center}
+
+On remarque que les personnes qui composent de la musique passent en
+moyenne plus de temps à écouter de la musique que les autres groupes.
+
+Étrangement, les personnes qui jouent d'un instrument mais ne composent
+pas de musique passent en moyenne moins de temps à écouter de la musique
+que les personnes qui ne font ni l'un ni l'autre. Cela peut s'expliquer
+par le fait que les personnes qui jouent d'un instrument passent déjà du
+temps à pratiquer leur instrument et ont donc moins le temps d'écouter
+de la musique.
+
+Finalement, les personnes qui jouent et composent passent légèrement
+moins de temps à écouter de la musique que les personnes qui composent
+sans jouer d'un instrument.
+
+\hypertarget{conclusion-1}{%
+\paragraph{\texorpdfstring{\textbf{Conclusion}}{Conclusion}}\label{conclusion-1}}
+
+Ainsi, on peut dire que jouer d'un instrument ou composer de la musique
+semble avoir une influence sur le temps passé à écouter de la musique.
+Il faudrait néanmoins un dataset avec plus d'échantillons pour confirmer
+cette hypothèse.
+
+\hypertarget{est-ce-que-luxe9coute-dun-certain-style-de-musique-est-corruxe9luxe9e-uxe0-celle-des-autres-styles-de-musique}{%
+\subsubsection{3) Est-ce que l'écoute d'un certain style de musique est
+corrélée à celle des autres styles de musique
+?}\label{est-ce-que-luxe9coute-dun-certain-style-de-musique-est-corruxe9luxe9e-uxe0-celle-des-autres-styles-de-musique}}
+
+\hypertarget{analyse-3}{%
+\paragraph{\texorpdfstring{\textbf{Analyse}}{Analyse}}\label{analyse-3}}
+
+Ce dataset peut aussi nous permettre de nous demander si 2 styles de
+musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un
+est corrélée positivement (ou négativement) à l'écoute de l'autre. Pour
+cela, on peut représenter les coefficients de corrélation entre chaque
+style dans un tableau.
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-5-1} \end{center}
+
+La lecture de ce graphe est assez difficile car les informations sont
+assez peu visuelles. Nous allons donc faire une ACM. L'Analyse des
+Correspondances Multiples (ACM) est une méthode statistique utilisée
+pour explorer les relations entre les catégories de plusieurs variables
+qualitatives. Elle réduit la dimensionnalité des données et les
+représente dans un espace de dimension plus faible, facilitant ainsi
+leur interprétation visuelle. C'est une technique utile pour analyser
+des tableaux de contingence et découvrir des associations entre les
+différentes catégories des variables étudiées. Plus 2 variables sont
+proches sur le graphe, plus elles ont de chance d'avoir la même valeur
+pour 2 individus distincts. Plus elles sont éloignés, moins il y a
+d'individus pour lesquels la valeur de ces variables est la même.
+Autrement dit, ce graphe permet de montrer la corrélation (signée) entre
+les différents styles de musique.
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-6-1} \end{center}
+
+\begin{center}\includegraphics{rapport_files/figure-latex/unnamed-chunk-6-2} \end{center}
+
+\hypertarget{conclusion-2}{%
+\paragraph{\texorpdfstring{\textbf{Conclusion}}{Conclusion}}\label{conclusion-2}}
+
+On voit donc bien qu'on peut grouper certains styles. Par exemple, les
+personnes écoutant du rap écoutent souvent du R\&B et du hip hop, et les
+personnes n'écoutant pas de rock n'écouteront pas de métal. Certains
+styles sont plutôt à part, comme la K pop, dont la fréquence d'écoute
+n'a que peu de corrélation avec celle des autres styles. Cela se vérifie
+dans le tableau précédent.
+
+Ce graphique ne doit cependant que nous donner des pistes de recherche,
+il ne faut pas tirer de conclusions avec : il n'explique que 13.1\% de
+la variance, il n'est donc pas du tout exact. Certaines variables sont
+moins bien représentées que d'autres. En effet, pour avoir un graphe
+parfait, il faudrait le représenter dans un nombre de dimensions
+élevées. C'est évidemment impossible (sans compromettre la qualité de la
+lecture), on réduit donc l'espace à deux dimensions. Mais cela nous fait
+perdre des informations, et pour certaines variables (Gospel, Classical,
+Video game music), beaucoup d'informations seront perdues, tandis que
+pour d'autres (Hip hop, R\&B, Rap), la majorité seront conservées. Le
+deuxième graphique montre donc cela. Il n'est donc pas vraiment possible
+de tirer de conclusions avec uniquement ce graphique, mais il est tout
+de même très efficace pour nous donner une idée de la corrélation entre
+chaque variable.
+
+Comme on pouvait s'y attendre, il existe donc bien des corrélations
+entre les fréquence d'écoute des différents styles de musique. Le
+meilleur exemple est celle du rap et celle du hip hop, avec un
+coefficient de corrélation de 0.78.
+
+\hypertarget{existe-t-il-une-corruxe9lation-entre-le-style-favori-dune-personne-et-sa-santuxe9-mentale}{%
+\subsubsection{4) Existe-t-il une corrélation entre le style favori
+d'une personne et sa santé mentale
+?}\label{existe-t-il-une-corruxe9lation-entre-le-style-favori-dune-personne-et-sa-santuxe9-mentale}}
+
+\hypertarget{analyse-4}{%
+\paragraph{\texorpdfstring{\textbf{Analyse}}{Analyse}}\label{analyse-4}}
+
+La réponse qui nous viendrait comme cela serait oui, car il semble
+logique de faire le lien entre ``avoir comme style favori un style
+plutôt lent/calme'' et ``avoir des problèmes de santé mentale''.
+
+Pour vérifier cela, observons d'abords pour chaque style de musique le
+nombre de personnes qui l'ont en favori ainsi que leur niveau
+auto-évalué de dépression, d'anxiété, d'insomnie et d'OCD. A savoir que
+les échelles sont continues car certains se sont évalués l'insomnie et
+la dépression à 3.5, alors que d'autres se sont évalués l'OCD à 5.5 ou
+8.5 et l'anxiété à 7.5. Garder une échelle discrète rendrait ainsi bien
+moins simple la comparaison entre les 4 graphiques, l'échelle variant
+d'un graphique à un autre.
+
+\includegraphics{rapport_files/figure-latex/unnamed-chunk-8-1.pdf}
+
+La première chose que nous remarquons est que certains styles de
+musiques sont bien moins populaires que d'autres, et cela peut avoir un
+impact sur la fiabilité des conclusions qu'on pourra tirés, des styles
+comme le Latino, le Lofi ou encore le Gospel n'ayant que des
+échantillons très réduit de personnes les représentant. La deuxième
+chose notable est la prévalence des différents problèmes mentaux, qui du
+plus prévalent au moins prévalent semblent être l'anxiété, la
+dépression, l'insomnie et enfin l'OCD. Mais difficile de conclure avec
+assurance ici.
+
+Il nous est au final complexe de conclure quoique ce soit d'autre avec
+de tels graphiques, les grandes différences de taille d'échantillon
+rendant les différents styles difficilement comparable. Il nous faut
+donc aller plus en loin en regardant plutôt les proportions par rapport
+à chaque échantillon global de chaque style au lieu des nombres bruts.
+
+\includegraphics{rapport_files/figure-latex/unnamed-chunk-10-1.pdf}
+
+Les styles qui se démarquent le mieux sont comme attendu ceux qui
+possèdent les plus petits échantillons, on a d'abords le latino qui
+semble être le style le plus corrélé positivement aux différents
+problèmes mentaux, et à l'opposé on a le Lofi qui semblent être le plus
+corrélé négativement. Ce qui correspondrait à l'hypothèse de départ, le
+Lofi étant un style qui se caractérise principalement par sa lenteur et
+son calme, et le Latino étant un style très dansant. De plus, ces 2
+styles sont possiblement les styles présents les plus codifiés dans leur
+ambiance, pouvant transmettre au final une palette assez restreinte
+d'émotions. Ceci pourrait expliquer ce que nous voyons, là où les autres
+styles vont posséder des morceaux ne transmettant pas du tout les même
+émotions l'un par rapport à l'autre. Mais il est important de garder en
+tête que l'échantillon Latino n'est composé que de 3 personnes, et Lofi
+d'une dizaine de personnes, rendant tout ceci très hypothétique.
+
+Ensuite, le Gospel est le style dont les résultats varient le plus d'un
+problème mental à un autre, étant parfois très corrélé positivement
+comme avec l'OCD, et parfois très négativement comme avec l'insomnie,
+sans doute une conséquence de son échantillon de 6 personnes.
+
+Les autres styles, possédant de plus important échantillons, sont plus
+similaires les uns aux autres. Il n'y pas vraiment de styles qui se
+démarquent franchement, puisque souvent par exemple si un style possède
+deux fois plus de niveau 1 que de niveau 2 qu'un autre, ils auront au
+final la même proportion de personnes avec un niveau inférieur à 2,
+comme le classique et le country pour la dépression. Ceci pourrait
+simplement s'expliquer par le fait qu'une division d'un problème mental
+en 11 niveaux différents est peu pertinent pour une auto-évaluation,
+l'Homme ayant du mal à voir une différence entre deux niveaux
+côte-à-côte.
+
+\hypertarget{conclusion-3}{%
+\paragraph{\texorpdfstring{\textbf{Conclusion}}{Conclusion}}\label{conclusion-3}}
+
+Ainsi, il semble difficile de répondre oui à notre question, surtout que
+le peu de corrélation que l'on a pu percevoir semble plus être une
+implication de l'ambiance des morceaux plutôt que des styles à
+proprement parler. Mais une chose importante que nous n'avons pas pris
+en compte est le fait qu'avoir un style favori ne signifi pas forcément
+que l'on écoute beaucoup plus ce style que d'autres. Ce pourrait même
+parfois être l'inverse. De plus regarder la corélation entre la musique
+l'intensité des problèmes mentaux ne nous dit rien de si la musique à un
+impacte positif ou négatif, cela peut au mieux juste nous dit si
+certains style sont meilleurs pour la santé que d'autres. Il semble donc
+être plus intéressant de se poser la question ``Les styles de musiques
+peuvent-t-il avoir un impact négatifs ou positifs sur les problèmes
+mentaux ?''.
+
+\end{document}
