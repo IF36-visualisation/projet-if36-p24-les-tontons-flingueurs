@@ -96,10 +96,11 @@ library(readr)
 library(tibble)
 library(gridExtra)
 library("viridis")
-library(readr)
+library(ggcorrplot)
 library(FactoMineR)
 library(factoextra)
 df <- read_csv("data/mxmh_survey_results.csv", show_col_types = FALSE)
+frequency_columns <- colnames(df)[grep("^Frequency", colnames(df))]
 ```
 
 ### 1) Quelles sont les données qui composent le dataset ?
@@ -156,7 +157,7 @@ platforms <- ggplot(df_platform, aes(x = reorder(`Primary streaming service`, -c
 little <- df %>% filter(`Hours per day` < 2) %>% nrow()
 medium <- df %>% filter(`Hours per day` >= 2 & Age < 6) %>% nrow()
 hard <- df %>% filter(`Hours per day` >= 6 & Age < 11) %>% nrow()
-expert <- df %>% filter(`Hours per day >= 11) %>% nrow()
+expert <- df %>% filter(`Hours per day` >= 11) %>% nrow()
 
 df_hours <- data.frame(
   categorie = c("-2h", "2h-5h", "6h-10h", "10h+"),
@@ -362,20 +363,69 @@ Ainsi, on peut dire que jouer d'un instrument ou composer de la musique semble a
 
 <br>
 
-### 3) Est-ce que l'écoute d'un certain type de musique est corrélée à celle des autres styles de musique ?
-
-Ce dataset peut aussi nous permettre de nous demander si 2 styles de musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un est corrélée positivement à l'écoute de l'autre. Pour cela, on peut représenter les coefficients de corrélation entre chaque style dans un tableau.
-
-
+### 3) Est-ce que l'écoute d'un certain style de musique est corrélée à celle des autres styles de musique ?
 
 <br>
 
 #### **Analyse**
 
+Ce dataset peut aussi nous permettre de nous demander si 2 styles de musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un est corrélée positivement (ou négativement) à l'écoute de l'autre. Pour cela, on peut représenter les coefficients de corrélation entre chaque style dans un tableau.
+
+```{r fig.align = "center", fig.width = 10, fig.height = 10}
+map_function <- function(x) {
+  case_when(
+    x == "Never" ~ 0,
+    x == "Rarely"~ 1,
+    x == "Sometimes"~ 2,
+    x == "Very frequently"~ 3,
+    TRUE ~ NA_integer_  # Si les conditions ne sont pas satisfaites, on retourne NA.
+  )
+}
+df_frequency_as_number = df[frequency_columns]
+for (col in frequency_columns) {
+  df_frequency_as_number = mutate(df_frequency_as_number, {{col}} := map_function(df[col]))
+}
+remove_frequency_prefix <- function(col_name) {
+  col_name <- sub("^Frequency \\[", "", col_name)
+  sub("]$", "", col_name)
+}
+ggcorrplot(as.data.frame(cor(as.matrix(df_frequency_as_number))),  type = "lower", lab = TRUE) +
+  ggtitle("Corrélation entre les fréquences d'écoute des différents styles de musique")
+```
+
+La lecture de ce graphe est assez difficile car les informations sont assez peu visuelles. Nous allons donc faire une ACM. Une ACM (Analyse en Composantes Principales) est une méthode statistique utilisée pour réduire la dimensionnalité des données en identifiant les motifs et les relations entre les variables, afin de représenter ces données de manière plus concise et informative. Nous n'allons ici pas représenter les données (les personnes ayant répondu au sondage), mais les variables, qui peuvent aussi être placées dans un repère à l'aide de cette méthode. Plus 2 variables sont proches sur le graphe, plus elles ont de chance d'avoir la même valeur pour 2 individus distincts. Plus elles sont éloignés, moins il y a d'individus pour lesquels la valeur de ces variables est la même. Autrement dit, ce graphe permet de montrer la corrélation (signée) entre les différents styles de musique.
+
+```{r fig.align = "center"}
+df_frequency_without_prefix = df[frequency_columns]
+# On enlève le préfixe "Frequency" au nom des variables
+remove_frequency_prefix <- function(col_name) {
+  col_name <- sub("^Frequency \\[", "", col_name)
+  sub("]$", "", col_name)
+}
+colnames(df_frequency_without_prefix) <- sapply(colnames(df_frequency_without_prefix), remove_frequency_prefix)
+# On fait l'ACM
+mca <- MCA(df_frequency_without_prefix, graph = FALSE)
+plot(fviz_mca_var(mca, choice = "mca.cor", repel = TRUE,
+                  ggtheme = theme_minimal()))
+
+# Affichage de la qualité de représentation de chaque variable
+sum_values <- mca$var$eta2[,1] + mca$var$eta2[,2]
+data <- data.frame(style = names(sum_values), precision = sum_values)
+data$style <- factor(data$style, levels = data$style[order(-data$precision)])
+ggplot(data, aes(x = style, y = precision)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Qualité de représentation des styles", x = "Style de musique", y = "Qualité de représentation") +  # Add title and axis labels
+  theme_minimal() + # Apply a minimal theme
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels by 90 degrees
+```
 
 #### **Conclusion**
 
-<br>
+On voit donc bien qu'on peut grouper certains styles. Par exemple, les personnes écoutant du rap écoutent souvent du R&B et du hip hop, et les personnes n'écoutant pas de rock n'écouteront pas de métal. Certains styles sont plutôt à part, comme la K pop, dont la fréquence d'écoute n'a que peu de corrélation avec celle des autres styles. Cela se vérifie dans le tableau précédent.
+
+Ce graphique ne doit cependant que nous donner des pistes de recherche, il ne faut pas tirer de conclusions avec : il n'explique que 13.1% de la variance, il n'est donc pas du tout exact. Certaines variables sont moins bien représentées que d'autres. Le deuxième graphique montre cela. Il n'est donc pas vraiment possible de tirer de conclusions avec uniquement ce graphique, mais il est tout de même très efficace pour nous donner une idée de la corrélation entre chaque variable.
+
+Comme on pouvait s'y attendre, il existe donc bien des corrélations entre les fréquence d'écoute des différents styles de musique. Le meilleur exemple est celle du rap et celle du hip hop, avec un coefficient de corrélation de 0.78.
 
 ### 4) Existe-t-il une corrélation entre le style favori d'une personne et sa santé mentale ?
 
