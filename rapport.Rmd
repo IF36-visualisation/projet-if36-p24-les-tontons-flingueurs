@@ -221,7 +221,7 @@ df_effects$`Music effects` <- factor(df_effects$`Music effects`, levels = c("Imp
 
 effects <- ggplot(df_effects, aes(x = "", y = count, fill = `Music effects`)) +
   geom_bar(stat = "identity", width = 1) +
-  coord_polar("y") +
+  coord_flip() +
   theme_minimal() +
   labs(title = "Effets de la musique", x = "", y = "Nombre de répondants", fill = "Légende") +
   theme(legend.position = "right")
@@ -237,7 +237,7 @@ df_languages$`Foreign languages` <- factor(df_languages$`Foreign languages`, lev
 
 foreign <- ggplot(df_languages, aes(x = "", y = count, fill = `Foreign languages`)) +
   geom_bar(stat = "identity", width = 1) +
-  coord_polar("y") +
+  coord_flip() +
   theme_minimal() +
   labs(title = "Langues étrangères", x = "", y = "Nombre de répondants", fill = "Légende") +
   theme(legend.position = "right")
@@ -253,7 +253,7 @@ df_work$`While working` <- factor(df_work$`While working`, levels = c("Yes", "No
 
 working <- ggplot(df_work, aes(x = "", y = count, fill = `While working`)) +
   geom_bar(stat = "identity", width = 1) +
-  coord_polar("y") +
+  coord_flip() +
   theme_minimal() +
   labs(title = "Pendant le travail", x = "", y = "Nombre de répondants", fill = "Légende") +
   theme(legend.position = "right")
