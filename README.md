@@ -43,7 +43,7 @@ Ainsi, nous avons un total de 736 observations pour 33 features.
 1 de type date :
 * Timestamp (date de soumission de la réponse au formulaire)
 
-et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles était limité) :
+Et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles était limité) :
 * Primary streaming (plateforme d'écoute principale)
 * Fav genre
 * Music effect (choix entre improve, no effect et worsen)

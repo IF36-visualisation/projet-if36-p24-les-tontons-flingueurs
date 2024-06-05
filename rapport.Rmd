@@ -3,9 +3,7 @@ title: "Projet IF36"
 author: "Les Tontons Flingueurs"
 date: "2024-05-04"
 output:
-  word_document: default
   html_document: default
-  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -59,7 +57,7 @@ Ainsi, nous avons un total de **736** observations pour **33** features.
 
 * **Timestamp** (date de soumission de la réponse au formulaire)
 
-et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles était limité) :
+Et les 20 restantes sont de type string et sont ordonnables (et le nombre de réponses possibles était limité) :
 
 * **Primary streaming** (plateforme d'écoute principale)
 * **Fav genre**
@@ -80,9 +78,10 @@ et les 20 restantes sont de type string et sont ordonnables (et le nombre de ré
 * **Frequency (Rap)**
 * **Frequency (Rock)**
 * **Frequency (Video game)**
-* **Permission** (autorisation de rendre public la réponse, ainsi il n'y a qu'une seule valeur : i understand)
+* **Permission** (autorisation de rendre publique la réponse, ainsi il n'y a qu'une seule valeur : "I understand.")
 
 On retrouve réellement deux sous-groupes de features : les fréquences d'écoutes et les troubles mentaux.
+
 
 ## Analyse
 
