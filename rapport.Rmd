@@ -1,16 +1,16 @@
 ---
 title: "Projet IF36"
-author: "Les tontons flingueurs"
+author: "Les Tontons Flingueurs"
 date: "2024-05-04"
 output:
-  pdf_document: default
+  word_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
 ![](https://i.imgur.com/tPHIgmR.png)
 
 # Introduction
@@ -88,7 +88,10 @@ On retrouve réellement deux sous-groupes de features : les fréquences d'écout
 
 Il est important de noter que notre dataset est d'une part relativement petit, et d'autre part auto-déclaratif. Ainsi, les réponses peuvent être biaisées par la perception de la personne qui répond, et les conclusions que nous pourrons tirer ne seront pas nécessairement généralisables à l'ensemble de la population.
 
+<br><br>
+
 ```{r setup2, echo=FALSE, include=FALSE}
+
 library(ggplot2)
 library(dplyr)
 library(tidyr)
@@ -99,6 +102,7 @@ library("viridis")
 library(ggcorrplot)
 library(FactoMineR)
 library(factoextra)
+
 df <- read_csv("data/mxmh_survey_results.csv", show_col_types = FALSE)
 frequency_columns <- colnames(df)[grep("^Frequency", colnames(df))]
 remove_frequency_prefix <- function(dataframe) {
@@ -113,8 +117,6 @@ remove_frequency_prefix <- function(dataframe) {
 ```
 
 ### 1) Quelles sont les données qui composent le dataset ?
-
-<br>
 
 #### **Analyse**
 
@@ -257,6 +259,7 @@ working <- ggplot(df_work, aes(x = "", y = count, fill = `While working`)) +
   theme_minimal() +
   labs(title = "Pendant le travail", x = "", y = "Nombre de répondants", fill = "Légende") +
   theme(legend.position = "right")
+
 ```
 
 ```{r, echo=FALSE, fig.align = "center"}
@@ -273,6 +276,8 @@ working
 
 ```
 
+<br>
+
 #### **Conclusion**
 
 Nous avons 736 répondants dans ce dataset.
@@ -286,11 +291,9 @@ La majorité des répondants écoutent de la musique entre 2 et 5 heures par jou
 Le genre de musique favori qui ressort le plus est le Rock.
 Enfin, nous constatons que la musique a un effet positif sur la majorité des répondants, qu'ils écoutent de la musique dans des langues étrangères et pendant le travail.
 
-<br>
+<br><br>
 
 ### 2) Est-ce que la pratique musicale (jouer d'un instrument ou composer de la musique) a une influence le temps passé à écouter de la musique ?
-
-<br>
 
 #### **Analyse**
 
@@ -308,6 +311,7 @@ Nous avons ensuite calculé la moyenne des heures passées à écouter de la mus
 <br>
 
 ```{r, echo=FALSE}
+
 # Gestion des outliers par Sabrina Jeannin (https://www.kaggle.com/code/sabrinajeannin/music-and-mental-health)
 
 #find Q1, Q3, and interquartile range for values in column hours_per_day
@@ -358,6 +362,8 @@ ggplot(df_moyenne, aes(x = reorder(Groupe, Ordre), y = Moyenne, fill = Groupe)) 
 
 ```
 
+<br>
+
 On remarque que les personnes qui composent de la musique passent en moyenne plus de temps à écouter de la musique que les autres groupes. 
 
 Étrangement, les personnes qui jouent d'un instrument mais ne composent pas de musique passent en moyenne moins de temps à écouter de la musique que les personnes qui ne font ni l'un ni l'autre. Cela peut s'expliquer par le fait que les personnes qui jouent d'un instrument passent déjà du temps à pratiquer leur instrument et ont donc moins le temps d'écouter de la musique.
@@ -368,15 +374,15 @@ Finalement, les personnes qui jouent et composent passent légèrement moins de 
 
 Ainsi, on peut dire que jouer d'un instrument ou composer de la musique semble avoir une influence sur le temps passé à écouter de la musique. Il faudrait néanmoins un dataset avec plus d'échantillons pour confirmer cette hypothèse.
 
-<br>
+<br><br>
 
 ### 3) Est-ce que l'écoute d'un certain style de musique est corrélée à celle des autres styles de musique ?
-
-<br>
 
 #### **Analyse**
 
 Ce dataset peut aussi nous permettre de nous demander si 2 styles de musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un est corrélée positivement (ou négativement) à l'écoute de l'autre. Pour cela, on peut représenter les coefficients de corrélation entre chaque style dans un tableau.
+
+<br>
 
 ```{r, echo=FALSE, fig.align = "center", fig.width = 10, fig.height = 10}
 map_function <- function(x) {
@@ -398,7 +404,11 @@ ggcorrplot(correlation_df,  type = "lower", lab = TRUE) +
   ggtitle("Corrélation entre les fréquences d'écoute des différents styles de musique")
 ```
 
+<br>
+
 La lecture de ce graphe est assez difficile car les informations sont assez peu visuelles. Nous allons donc faire une ACM. L'Analyse des Correspondances Multiples (ACM) est une méthode statistique utilisée pour explorer les relations entre les catégories de plusieurs variables qualitatives. Elle réduit la dimensionnalité des données et les représente dans un espace de dimension plus faible, facilitant ainsi leur interprétation visuelle. C'est une technique utile pour analyser des tableaux de contingence et découvrir des associations entre les différentes catégories des variables étudiées. Plus 2 variables sont proches sur le graphe, plus elles ont de chance d'avoir la même valeur pour 2 individus distincts. Plus elles sont éloignés, moins il y a d'individus pour lesquels la valeur de ces variables est la même. Autrement dit, ce graphe permet de montrer la corrélation (signée) entre les différents styles de musique.
+
+<br>
 
 ```{r, echo=FALSE, fig.align = "center"}
 df_frequency_without_prefix = df[frequency_columns]
@@ -424,6 +434,8 @@ ggplot(data, aes(x = style, y = precision)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels by 90 degrees
 ```
 
+<br>
+
 #### **Conclusion**
 
 On voit donc bien qu'on peut grouper certains styles. Par exemple, les personnes écoutant du rap écoutent souvent du R&B et du hip hop, et les personnes n'écoutant pas de rock n'écouteront pas de métal. Certains styles sont plutôt à part, comme la K pop, dont la fréquence d'écoute n'a que peu de corrélation avec celle des autres styles. Cela se vérifie dans le tableau précédent.
@@ -432,9 +444,9 @@ Ce graphique ne doit cependant que nous donner des pistes de recherche, il ne fa
 
 Comme on pouvait s'y attendre, il existe donc bien des corrélations entre les fréquence d'écoute des différents styles de musique. Le meilleur exemple est celle du rap et celle du hip hop, avec un coefficient de corrélation de 0.78.
 
-### 4) Existe-t-il une corrélation entre le style favori d'une personne et sa santé mentale ?
+<br><br>
 
-<br>
+### 4) Existe-t-il une corrélation entre le style favori d'une personne et sa santé mentale ?
 
 #### **Analyse**
 
@@ -444,15 +456,18 @@ Pour vérifier cela, observons d'abords pour chaque style de musique le nombre d
 
 <br>
 
-
 ```{r, echo=FALSE}
+
 # Enlever les warnings pour les valeurs manquantes
 options(dplyr.summarise.inform = FALSE)
+
+
 
 df_fav_genre_Depression <- df %>%
   group_by(`Fav genre`, Depression) %>%
   summarise(nb_total = n()) %>%
   spread(key = Depression, value = nb_total, fill = 0)
+
 
 names(df_fav_genre_Depression)[-1] <- paste0("nb_Depression", colnames(df_fav_genre_Depression)[-1])
 nb_total_Malade = rowSums(df_fav_genre_Depression[-1])
@@ -491,7 +506,6 @@ df_fav_genre_Anxiety$nb_total_Malade <- nb_total_Malade
 df_fav_genre_Anxiety <- df_fav_genre_Anxiety %>% rename(Fav.genre_Anxiety = `Fav genre`)
 
 
-
 plot_Anxiety <- ggplot(df_fav_genre_Anxiety, aes(x = Fav.genre_Anxiety)) +
   geom_col(aes(y = nb_Anxiety10 + nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 10), position = "identity") +
   geom_col(aes(y = nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 9), position = "identity") +
@@ -521,8 +535,6 @@ names(df_fav_genre_Insomnia)[-1] <- paste0("nb_Insomnia", colnames(df_fav_genre_
 nb_total_Malade = rowSums(df_fav_genre_Insomnia[-1])
 df_fav_genre_Insomnia$nb_total_Malade <- nb_total_Malade
 df_fav_genre_Insomnia <- df_fav_genre_Insomnia %>% rename(Fav.genre_Insomnia = `Fav genre`)
-
-#print(df_fav_genre_Insomnia)
 
 
 plot_Insomnia <- ggplot(df_fav_genre_Insomnia, aes(x = Fav.genre_Insomnia)) +
@@ -574,12 +586,16 @@ plot_OCD <- ggplot(df_fav_genre_OCD, aes(x = Fav.genre_OCD)) +
        title = "Relation entre le style de musique préféré et l'OCD") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_viridis(name = "Niveau d'OCD", direction = -1)
-```
 
+```
 
 ```{r, echo=FALSE, fig.height=15, fig.width=10}
+
 combined_plot <- grid.arrange(plot_Depression, plot_Anxiety, plot_Insomnia, plot_OCD, ncol = 1)
+
 ```
+
+<br>
 
 La première chose que nous remarquons est que certains styles de musiques sont bien moins populaires que d'autres, et cela peut avoir un impact sur la fiabilité des conclusions qu'on pourra tirés, des styles comme le Latino, le Lofi ou encore le Gospel n'ayant que des échantillons très réduit de personnes les représentant.
 La deuxième chose notable est la prévalence des différents problèmes mentaux, qui du plus prévalent au moins prévalent semblent être l'anxiété, la dépression, l'insomnie et enfin l'OCD. Mais difficile de conclure avec assurance ici.
@@ -589,6 +605,7 @@ Il nous est au final complexe de conclure quoique ce soit d'autre avec de tels g
 <br>
 
 ```{r, echo=FALSE}
+
 df_fav_genre_Depression_prop <- df_fav_genre_Depression %>%
   mutate(nb_Depression0 = nb_Depression0 / nb_total_Malade * 100,
          nb_Depression1 = nb_Depression1 / nb_total_Malade * 100,
@@ -602,6 +619,7 @@ df_fav_genre_Depression_prop <- df_fav_genre_Depression %>%
          nb_Depression8 = nb_Depression8 / nb_total_Malade * 100,
          nb_Depression9 = nb_Depression9 / nb_total_Malade * 100,
          nb_Depression10 = nb_Depression10 / nb_total_Malade * 100)
+
 
 plot_Depression_prop <- ggplot(df_fav_genre_Depression_prop, aes(x = Fav.genre_Depression)) +
   geom_col(aes(y = nb_Depression10 + nb_Depression9 + nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 10), position = "identity") +
@@ -727,11 +745,16 @@ plot_OCD_prop <- ggplot(df_fav_genre_OCD_prop, aes(x = Fav.genre_OCD)) +
        title = "Relation entre le style de musique préféré et l'OCD") +
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_viridis(name = "Niveau d'OCD", direction = -1)
+
 ```
 
 ```{r, echo=FALSE, fig.height=15, fig.width=10}
+
 combined_plot <- grid.arrange(plot_Depression_prop, plot_Anxiety_prop, plot_Insomnia_prop, plot_OCD_prop, ncol = 1)
+
 ```
+
+<br>
 
 Les styles qui se démarquent le mieux sont comme attendu ceux qui possèdent les plus petits échantillons, on a d'abords le latino qui semble être le style le plus corrélé positivement aux différents problèmes mentaux, et à l'opposé on a le Lofi qui semblent être le plus corrélé négativement. Ce qui correspondrait à l'hypothèse de départ, le Lofi étant un style qui se caractérise principalement par sa lenteur et son calme, et le Latino étant un style très dansant. De plus, ces 2 styles sont possiblement les styles présents les plus codifiés dans leur ambiance, pouvant transmettre au final une palette assez restreinte d'émotions. Ceci pourrait expliquer ce que nous voyons, là où les autres styles vont posséder des morceaux ne transmettant pas du tout les même émotions l'un par rapport à l'autre. Mais il est important de garder en tête que l'échantillon Latino n'est composé que de 3 personnes, et Lofi d'une dizaine de personnes, rendant tout ceci très hypothétique.
 
@@ -742,5 +765,3 @@ Les autres styles, possédant de plus important échantillons, sont plus similai
 #### **Conclusion**
 
 Ainsi, il semble difficile de répondre oui à notre question, surtout que le peu de corrélation que l'on a pu percevoir semble plus être une implication de l'ambiance des morceaux plutôt que des styles à proprement parler. Mais une chose importante que nous n'avons pas pris en compte est le fait qu'avoir un style favori ne signifi pas forcément que l'on écoute beaucoup plus ce style que d'autres. Ce pourrait même parfois être l'inverse. De plus regarder la corélation entre la musique l'intensité des problèmes mentaux ne nous dit rien de si la musique à un impacte positif ou négatif, cela peut au mieux juste nous dit si certains style sont meilleurs pour la santé que d'autres. Il semble donc être plus intéressant de se poser la question "Les styles de musiques peuvent-t-il avoir un impact négatifs ou positifs sur les problèmes mentaux ?".
-
-<br>
