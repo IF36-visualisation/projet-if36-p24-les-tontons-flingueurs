@@ -38,7 +38,6 @@ server <- function(input, output) {
     names(df_fav_genre_by_filter)[-1] <- paste0("step", colnames(df_fav_genre_by_filter)[-1])
     total = rowSums(df_fav_genre_by_filter[-1])
     df_fav_genre_by_filter$total <- total
-    print(df_fav_genre_by_filter)
     df_fav_genre_by_filter <- df_fav_genre_by_filter %>%
       rename(value = `Fav genre`) %>%
       mutate(step0 = step0 / total * 100,
