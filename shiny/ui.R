@@ -22,9 +22,9 @@ ui <- dashboardPage(
           "
                    )
         ),
-      box(title = "coucou :)",
+      box(title = "Relation entre le style de musique préféré et certains problèmes médicaux",
           plotOutput("fav_genre_by_filter"),
-          selectInput("filter_column_for_fav_genre", "Sélectionner le champ avec lequel comparer", choices = list("Dépression" = "Depression", "Anxiété" = "Anxiety", "Insomnie" = "Insomnia", "OCD" = "OCD")),
+          selectInput("filter_column_for_fav_genre", "Sélectionner un problème médical", choices = list("Dépression" = "Depression", "Anxiété" = "Anxiety", "Insomnie" = "Insomnia", "OCD" = "OCD")),
           checkboxGroupInput("genres_medical_vs_fav_genre", "Genres à inclure sur le graphique", choices = genres, selected = genres)
           )
       )

@@ -3,7 +3,7 @@ title: "Projet IF36"
 author: "Les tontons flingueurs"
 date: "2024-05-04"
 output:
-  pdf_document: default
+  #pdf_document: default
   html_document: default
 ---
 
