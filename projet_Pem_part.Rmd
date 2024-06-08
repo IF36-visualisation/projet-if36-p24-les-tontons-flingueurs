@@ -1,0 +1,455 @@
+---
+title: "projet"
+author: "Pem"
+date: "2024-05-02"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+library(readr)
+library(tibble)
+library(gridExtra)
+library("viridis")
+df <- read.csv("mxmh_survey_results.csv")
+```
+
+```{r}
+df_fav_genre_Depression <- df %>%
+  group_by(Fav.genre, Depression) %>%
+  summarise(nb_total = n()) %>%
+  spread(key = Depression, value = nb_total, fill = 0)
+
+names(df_fav_genre_Depression)[-1] <- paste0("nb_Depression", colnames(df_fav_genre_Depression)[-1])
+nb_total_Malade = rowSums(df_fav_genre_Depression[-1])
+df_fav_genre_Depression$nb_total_Malade <- nb_total_Malade
+df_fav_genre_Depression <- df_fav_genre_Depression %>% rename(Fav.genre_Depression = Fav.genre)
+
+#print(df_fav_genre_Depression)
+
+
+plot_Depression <- ggplot(df_fav_genre_Depression, aes(x = Fav.genre_Depression)) +
+  geom_col(aes(y = nb_Depression10 + nb_Depression9 + nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Depression9 + nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 3.5), position = "identity") +
+  geom_col(aes(y = nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Depression1 + nb_Depression0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Depression0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Nombre de personnes par niveau de dépression", 
+       title = "Relation entre le style de musique préféré et la dépression") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau de dépression", direction = -1)
+
+
+
+df_fav_genre_Anxiety <- df %>%
+  group_by(Fav.genre, Anxiety) %>%
+  summarise(nb_total = n()) %>%
+  spread(key = Anxiety, value = nb_total, fill = 0)
+
+names(df_fav_genre_Anxiety)[-1] <- paste0("nb_Anxiety", colnames(df_fav_genre_Anxiety)[-1])
+nb_total_Malade = rowSums(df_fav_genre_Anxiety[-1])
+df_fav_genre_Anxiety$nb_total_Malade <- nb_total_Malade
+df_fav_genre_Anxiety <- df_fav_genre_Anxiety %>% rename(Fav.genre_Anxiety = Fav.genre)
+
+#print(df_fav_genre_Anxiety)
+
+
+plot_Anxiety <- ggplot(df_fav_genre_Anxiety, aes(x = Fav.genre_Anxiety)) +
+  geom_col(aes(y = nb_Anxiety10 + nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 7.5), position = "identity") +
+  geom_col(aes(y = nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Anxiety1 + nb_Anxiety0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Anxiety0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Nombre de personnes par niveau d'anxiété", 
+       title = "Relation entre le style de musique préféré et l'anxiété") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'anxiété", direction = -1)
+
+
+
+df_fav_genre_Insomnia <- df %>%
+  group_by(Fav.genre, Insomnia) %>%
+  summarise(nb_total = n()) %>%
+  spread(key = Insomnia, value = nb_total, fill = 0)
+
+names(df_fav_genre_Insomnia)[-1] <- paste0("nb_Insomnia", colnames(df_fav_genre_Insomnia)[-1])
+nb_total_Malade = rowSums(df_fav_genre_Insomnia[-1])
+df_fav_genre_Insomnia$nb_total_Malade <- nb_total_Malade
+df_fav_genre_Insomnia <- df_fav_genre_Insomnia %>% rename(Fav.genre_Insomnia = Fav.genre)
+
+#print(df_fav_genre_Insomnia)
+
+
+plot_Insomnia <- ggplot(df_fav_genre_Insomnia, aes(x = Fav.genre_Insomnia)) +
+  geom_col(aes(y = nb_Insomnia10 + nb_Insomnia9 + nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Insomnia9 + nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 3.5), position = "identity") +
+  geom_col(aes(y = nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Insomnia1 + nb_Insomnia0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Insomnia0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Nombre de personnes par niveau d'insomnie", 
+       title = "Relation entre le style de musique préféré et l'insomnie") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'Insomnie", direction = -1)
+
+
+
+df_fav_genre_OCD <- df %>%
+  group_by(Fav.genre, OCD) %>%
+  summarise(nb_total = n()) %>%
+  spread(key = OCD, value = nb_total, fill = 0)
+
+names(df_fav_genre_OCD)[-1] <- paste0("nb_OCD", colnames(df_fav_genre_OCD)[-1])
+nb_total_Malade = rowSums(df_fav_genre_OCD[-1])
+df_fav_genre_OCD$nb_total_Malade <- nb_total_Malade
+#print(colnames(df_fav_genre_OCD))
+df_fav_genre_OCD <- df_fav_genre_OCD %>% rename(Fav.genre_OCD = Fav.genre)
+
+#print(df_fav_genre_OCD)
+
+
+plot_OCD <- ggplot(df_fav_genre_OCD, aes(x = Fav.genre_OCD)) +
+  geom_col(aes(y = nb_OCD10 + nb_OCD9 + nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_OCD9 + nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 8.5), position = "identity") +
+  geom_col(aes(y = nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 5.5), position = "identity") +
+  geom_col(aes(y = nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_OCD1 + nb_OCD0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_OCD0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Nombre de personnes par niveau d'OCD", 
+       title = "Relation entre le style de musique préféré et l'OCD") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'OCD", direction = -1)
+```
+
+La question que l'on se pose est la suivante : Existe-t-il une corrélation entre le style favori d'une personne et sa santé mentale ? La réponse qui nous viendrait comme cela serait oui, car il semble logique de faire le lien entre "avoir comme style favori un style plutôt lent/calme" et "avoir des problèmes de santé mentale".
+
+Pour vérifier cela, observons d'abords pour chaque style de musique le nombre de personnes qui l'ont en favori ainsi que leur niveau auto-évalué de dépression, d'anxiété, d'insomnie et d'OCD. A savoir que les échelles sont continues car certains se sont évalués l'insomnie et la dépression à 3.5, alors que d'autres se sont évalués l'OCD à 5.5 ou 8.5 et l'anxiété à 7.5. Garder une échelle discrète rendrait ainsi bien moins simple la comparaison entre les 4 graphiques, l'échelle variant d'un graphique à un autre.
+
+```{r, fig.height=15, fig.width=10}
+combined_plot <- grid.arrange(plot_Depression, plot_Anxiety, plot_Insomnia, plot_OCD, ncol = 1)
+```
+
+La première chose que nous remarquons est que certains styles de musiques sont bien moins populaires que d'autres, et cela peut avoir un impact sur la fiabilité des conclusions qu'on pourra tirés, des styles comme le Latino, le Lofi ou encore le Gospel n'ayant que des échantillons très réduit de personnes les représentant.
+La deuxième chose notable est la prévalence des différents problèmes mentaux, qui du plus prévalent au moins prévalent semblent être l'anxiété, la dépression, l'insomnie et enfin l'OCD. Mais difficile de conclure avec assurance ici.
+
+Il nous est au final complexe de conclure quoique ce soit d'autre avec de tels graphiques, les grandes différences de taille d'échantillon rendant les différents styles difficilement comparable. Il nous faut donc aller plus en loin en regardant plutôt les proportions par rapport à chaque échantillon global de chaque style au lieu des nombres bruts.
+
+```{r}
+df_fav_genre_Depression_prop <- df_fav_genre_Depression %>%
+  mutate(nb_Depression0 = nb_Depression0 / nb_total_Malade * 100,
+         nb_Depression1 = nb_Depression1 / nb_total_Malade * 100,
+         nb_Depression2 = nb_Depression2 / nb_total_Malade * 100,
+         nb_Depression3 = nb_Depression3 / nb_total_Malade * 100,
+         nb_Depression3.5 = nb_Depression3.5 / nb_total_Malade * 100,
+         nb_Depression4 = nb_Depression4 / nb_total_Malade * 100,
+         nb_Depression5 = nb_Depression5 / nb_total_Malade * 100,
+         nb_Depression6 = nb_Depression6 / nb_total_Malade * 100,
+         nb_Depression7 = nb_Depression7 / nb_total_Malade * 100,
+         nb_Depression8 = nb_Depression8 / nb_total_Malade * 100,
+         nb_Depression9 = nb_Depression9 / nb_total_Malade * 100,
+         nb_Depression10 = nb_Depression10 / nb_total_Malade * 100)
+
+plot_Depression_prop <- ggplot(df_fav_genre_Depression_prop, aes(x = Fav.genre_Depression)) +
+  geom_col(aes(y = nb_Depression10 + nb_Depression9 + nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Depression9 + nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Depression8 + nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Depression7 + nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Depression6 + nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Depression5 + nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Depression4 + nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Depression3.5 + nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 3.5), position = "identity") +
+  geom_col(aes(y = nb_Depression3 + nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Depression2 + nb_Depression1 + nb_Depression0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Depression1 + nb_Depression0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Depression0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Proportion (%) de personnes par niveau de dépression", 
+       title = "Relation entre le style de musique préféré et la dépression") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau de dépression", direction = -1)
+
+
+
+df_fav_genre_Anxiety_prop <- df_fav_genre_Anxiety %>%
+  mutate(nb_Anxiety0 = nb_Anxiety0 / nb_total_Malade * 100,
+         nb_Anxiety1 = nb_Anxiety1 / nb_total_Malade * 100,
+         nb_Anxiety2 = nb_Anxiety2 / nb_total_Malade * 100,
+         nb_Anxiety3 = nb_Anxiety3 / nb_total_Malade * 100,
+         nb_Anxiety4 = nb_Anxiety4 / nb_total_Malade * 100,
+         nb_Anxiety5 = nb_Anxiety5 / nb_total_Malade * 100,
+         nb_Anxiety6 = nb_Anxiety6 / nb_total_Malade * 100,
+         nb_Anxiety7 = nb_Anxiety7 / nb_total_Malade * 100,
+         nb_Anxiety7.5 = nb_Anxiety7.5 / nb_total_Malade * 100,
+         nb_Anxiety8 = nb_Anxiety8 / nb_total_Malade * 100,
+         nb_Anxiety9 = nb_Anxiety9 / nb_total_Malade * 100,
+         nb_Anxiety10 = nb_Anxiety10 / nb_total_Malade * 100)
+
+
+plot_Anxiety_prop <- ggplot(df_fav_genre_Anxiety_prop, aes(x = Fav.genre_Anxiety)) +
+  geom_col(aes(y = nb_Anxiety10 + nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Anxiety9 + nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Anxiety8 + nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Anxiety7.5 + nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 7.5), position = "identity") +
+  geom_col(aes(y = nb_Anxiety7 + nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Anxiety6 + nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Anxiety5 + nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Anxiety4 + nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Anxiety3 + nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Anxiety2 + nb_Anxiety1 + nb_Anxiety0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Anxiety1 + nb_Anxiety0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Anxiety0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Proportion (%) de personnes par niveau d'anxiété", 
+       title = "Relation entre le style de musique préféré et l'anxiété") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'anxiété", direction = -1)
+
+
+
+df_fav_genre_Insomnia_prop <- df_fav_genre_Insomnia %>%
+  mutate(nb_Insomnia0 = nb_Insomnia0 / nb_total_Malade * 100,
+         nb_Insomnia1 = nb_Insomnia1 / nb_total_Malade * 100,
+         nb_Insomnia2 = nb_Insomnia2 / nb_total_Malade * 100,
+         nb_Insomnia3 = nb_Insomnia3 / nb_total_Malade * 100,
+         nb_Insomnia3.5 = nb_Insomnia3.5 / nb_total_Malade * 100,
+         nb_Insomnia4 = nb_Insomnia4 / nb_total_Malade * 100,
+         nb_Insomnia5 = nb_Insomnia5 / nb_total_Malade * 100,
+         nb_Insomnia6 = nb_Insomnia6 / nb_total_Malade * 100,
+         nb_Insomnia7 = nb_Insomnia7 / nb_total_Malade * 100,
+         nb_Insomnia8 = nb_Insomnia8 / nb_total_Malade * 100,
+         nb_Insomnia9 = nb_Insomnia9 / nb_total_Malade * 100,
+         nb_Insomnia10 = nb_Insomnia10 / nb_total_Malade * 100)
+
+
+plot_Insomnia_prop <- ggplot(df_fav_genre_Insomnia_prop, aes(x = Fav.genre_Insomnia)) +
+  geom_col(aes(y = nb_Insomnia10 + nb_Insomnia9 + nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_Insomnia9 + nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_Insomnia8 + nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_Insomnia7 + nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_Insomnia6 + nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_Insomnia5 + nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_Insomnia4 + nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_Insomnia3.5 + nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 3.5), position = "identity") +
+  geom_col(aes(y = nb_Insomnia3 + nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_Insomnia2 + nb_Insomnia1 + nb_Insomnia0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_Insomnia1 + nb_Insomnia0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_Insomnia0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Proportion (%) de personnes par niveau d'insomnie", 
+       title = "Relation entre le style de musique préféré et l'insomnie") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'Insomnie", direction = -1)
+
+
+
+df_fav_genre_OCD_prop <- df_fav_genre_OCD %>%
+  mutate(nb_OCD0 = nb_OCD0 / nb_total_Malade * 100,
+         nb_OCD1 = nb_OCD1 / nb_total_Malade * 100,
+         nb_OCD2 = nb_OCD2 / nb_total_Malade * 100,
+         nb_OCD3 = nb_OCD3 / nb_total_Malade * 100,
+         nb_OCD4 = nb_OCD4 / nb_total_Malade * 100,
+         nb_OCD5 = nb_OCD5 / nb_total_Malade * 100,
+         nb_OCD5.5 = nb_OCD5.5 / nb_total_Malade * 100,
+         nb_OCD6 = nb_OCD6 / nb_total_Malade * 100,
+         nb_OCD7 = nb_OCD7 / nb_total_Malade * 100,
+         nb_OCD8 = nb_OCD8 / nb_total_Malade * 100,
+         nb_OCD8.5 = nb_OCD8.5 / nb_total_Malade * 100,
+         nb_OCD9 = nb_OCD9 / nb_total_Malade * 100,
+         nb_OCD10 = nb_OCD10 / nb_total_Malade * 100)
+
+
+plot_OCD_prop <- ggplot(df_fav_genre_OCD_prop, aes(x = Fav.genre_OCD)) +
+  geom_col(aes(y = nb_OCD10 + nb_OCD9 + nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 10), position = "identity") +
+  geom_col(aes(y = nb_OCD9 + nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 9), position = "identity") +
+  geom_col(aes(y = nb_OCD8.5 + nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 8.5), position = "identity") +
+  geom_col(aes(y = nb_OCD8 + nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 8), position = "identity") +
+  geom_col(aes(y = nb_OCD7 + nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 7), position = "identity") +
+  geom_col(aes(y = nb_OCD6 + nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 6), position = "identity") +
+  geom_col(aes(y = nb_OCD5.5 + nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 5.5), position = "identity") +
+  geom_col(aes(y = nb_OCD5 + nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 5), position = "identity") +
+  geom_col(aes(y = nb_OCD4 + nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 4), position = "identity") +
+  geom_col(aes(y = nb_OCD3 + nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 3), position = "identity") +
+  geom_col(aes(y = nb_OCD2 + nb_OCD1 + nb_OCD0, fill = 2), position = "identity") +
+  geom_col(aes(y = nb_OCD1 + nb_OCD0, fill = 1), position = "identity") + 
+  geom_col(aes(y = nb_OCD0, fill = 0), position = "identity") + 
+  labs(x = "Style de musique préféré", y = "Proportion (%) de personnes par niveau d'OCD", 
+       title = "Relation entre le style de musique préféré et l'OCD") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_viridis(name = "Niveau d'OCD", direction = -1)
+```
+
+```{r, fig.height=15, fig.width=10}
+combined_plot <- grid.arrange(plot_Depression_prop, plot_Anxiety_prop, plot_Insomnia_prop, plot_OCD_prop, ncol = 1)
+```
+
+Les styles qui se démarquent le mieux sont comme attendu ceux qui possèdent les plus petits échantillons, on a d'abords le latino qui semble être le style le plus corrélé positivement aux différents problèmes mentaux, et à l'opposé on a le Lofi qui semblent être le plus corrélé négativement. Ce qui correspondrait à l'hypothèse de départ, le Lofi étant un style qui se caractérise principalement par sa lenteur et son calme, et le Latino étant un style très dansant. De plus, ces 2 styles sont possiblement les styles présents les plus codifiés dans leur ambiance, pouvant transmettre au final une palette assez restreinte d'émotions. Ceci pourrait expliquer ce que nous voyons, là où les autres styles vont posséder des morceaux ne transmettant pas du tout les même émotions l'un par rapport à l'autre. Mais il est important de garder en tête que l'échantillon Latino n'est composé que de 3 personnes, et Lofi d'une dizaine de personnes, rendant tout ceci très hypothétique.
+
+Ensuite, le Gospel est le style dont les résultats varient le plus d'un problème mental à un autre, étant parfois très corrélé positivement comme avec l'OCD, et parfois très négativement comme avec l'insomnie, sans doute une conséquence de son échantillon de 6 personnes.
+
+Les autres styles, possédant de plus important échantillons, sont plus similaires les uns aux autres. Il n'y pas vraiment de styles qui se démarquent franchement, puisque souvent par exemple si un style possède deux fois plus de niveau 1 que de niveau 2 qu'un autre, ils auront au final la même proportion de personnes avec un niveau inférieur à 2, comme le classique et le country pour la dépression. Ceci pourrait simplement s'expliquer par le fait qu'une division d'un problème mental en 11 niveaux différents est peu pertinent pour une auto-évaluation, l'Homme ayant du mal à voir une différence entre deux niveaux côte-à-côte.
+
+Ainsi, il semble difficile de répondre oui à notre question, surtout que le peu de corrélation que l'on a pu percevoir semble plus être une implication de l'ambiance des morceaux plutôt que des styles à proprement parler. Mais une chose importante que nous n'avons pas pris en compte est le fait qu'avoir un style favori ne signifi pas forcément que l'on écoute beaucoup plus ce style que d'autres. Ce pourrait même parfois être l'inverse. De plus regarder la corélation entre la musique l'intensité des problèmes mentaux ne nous dit rien de si la musique à un impacte positif ou négatif, cela peut au mieux juste nous dit si certains style sont meilleurs pour la santé que d'autres. Il semble donc être plus intéressant de se poser la question suivante :
+
+La musique peut-elle avoir un impact négatif ou positif sur les problèmes mentaux en fonction du genre musical ?
+
+```{r}
+df_filter <- df %>% filter(Music.effects != "" & !is.na(Music.effects))
+
+df_freq <- df_filter %>% 
+  select(Frequency..Classical., Frequency..Country., Frequency..EDM., Frequency..Folk., Frequency..Gospel., Frequency..Hip.hop., 
+         Frequency..Jazz., Frequency..K.pop., Frequency..Latin., Frequency..Lofi., Frequency..Metal., Frequency..Pop., Frequency..R.B.,
+         Frequency..Rap., Frequency..Rock., Frequency..Video.game.music., Music.effects)
+
+df_freq_pivot <- df_freq %>% pivot_longer(!Music.effects, names_to = "genre_music", values_to = "frequency")
+
+#print(df_freq_pivot)
+```
+
+Pour répondre à cette question, étudions la possible corrélation entre la fréquence d'écoute d'un genre avec l'effet de la musique sur la santé mental, au moyen d'un barplot qui présente le dit effet en ordonnée ainsi que la proportion des fréquences d'écoutes en abscisse.
+
+Mais avant toute chose, deux choses sont à noter. La première est que 8 personnes n'ont rien indiqué quant à l'impact de la musique sur leur santé mentale, et qu'il a donc fallu retirer ces lignes du dataset pour ce graphique. La seconde est que le nombre de personne ayant répondu "Worsen" à l'impact sur la santé mentale s'élève à 17, ce qui est donc un petit échantillon.
+
+```{r, fig.height=10, fig.width=10}
+ggplot(df_freq_pivot) +
+  aes(x = Music.effects, fill = frequency) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "BrBG", guide = guide_legend(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0,0)) +
+  coord_flip() +
+  labs (title = "Etude de la corélation entre la fréquence d'écoute et l'effet de la musique sur la santé mental",
+        x = "Effet de la musique sur la santé mentale",
+        y = "Proportion des fréquences d'écoutes") +
+  facet_wrap(vars(genre_music), ncol = 2, scales = "free_x") +
+  theme(plot.title = element_text(size = 14, hjust = 0.5),
+        legend.position = "top",
+        panel.spacing.x=unit(1.4, "lines"),
+        panel.spacing.y=unit(0.5, "lines"))
+```
+En premier lieu, on remarque que la plupart des genres musicaux possèdent des proportions relativement équivalentes entre "Worsen", "No effet" et "Improve", ce qui tendrait à montrer qu'il n'y a pas de corrélation, au moins pour ces styles là. On a notament le Classique, le Jazz, le Lofi, le Rap, la Pop, le R&B, le Gospel, le Métal. D'autres semblent avoir un impact positif minime, comme le Rock, la K-pop ou le Folk. D'autres au contraire semblent avoir un impact négatif minime, comme le Latino, le Hip-Hop, et surtout les musiques de jeux-vidéos.
+
+Mais il n'y a pas l'air d'y avoir de lien entre les styles qui auraient un impact négatif, et de même pour ceux semblant avoir un impact positif. Ainsi, il est plus problable que ce soit des erreurs statistiques, sachant que la plupart des styles ne semblent pas avoir d'impact du tout. Et au final, le problème avec cette méthode est que l'effet de la musique sur la santé mentale est une variable globale, et non spécialisée à chaque genre musical. Ainsi, sa valeur est nécessairement multifactorielle et il est peu probable que par exemple, écouter des musiques de jeux vidéos suffisent seul à créer un impact négatif de la musique. De plus, ayant seulement un petit échantillon de "Worsen", ces résultats pourraient être invalidés.
+
+À travers tout ça, la réponse à la question posée semble donc plus être non.
+
+
+
+Posons-nous la question suivante : Une personne écoute-elle davantage son style de musique favoris que les autres ? Pour cela, nous allons regarder pour chaque style favori, la moyenne du nombre de styles écoutés à la même fréquence, plus fréquemment et enfin moins fréquemment.
+
+```{r}
+
+```
+
+Posons-nous la question suivante : Existe-t-il une corrélation entre le niveau d'un trouble mental, l'effet de la musique auto-perçu, et le temps d'écoute ? Pour cela, nous allons d'abords regarder par trouble la proportion de personnes qui considèrent l'impacte positif, négatif ou neutre par niveau d'intensité.
+
+```{r}
+df_maladie <- df_filter %>% 
+  select(Anxiety, Depression, Insomnia, OCD, Music.effects, Hours.per.day)
+
+#df_maladie <- df_maladie %>% mutate(Total_maladie = Anxiety + Depression + Insomnia + OCD)
+
+df_maladie_pivot <- df_maladie %>% pivot_longer(!c(Music.effects, Hours.per.day), names_to = "maladie", values_to = "niveau")
+df_maladie_pivot <- df_maladie_pivot %>% mutate(niveau = round(niveau))
+
+#print(df_maladie_pivot)
+```
+
+```{r, fig.height=10, fig.width=10}
+ggplot(df_maladie_pivot) +
+  aes(x = niveau, fill = Music.effects) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "RdYlGn", direction = -1, guide = guide_legend(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0,0)) +
+  coord_flip() +
+  labs (title = "Etude de la corélation entre le niveau d'un trouble mental et l'effet de la musique auto-perçu",
+        x = "Intensité du trouble",
+        y = "Proportion des effets de la musique sur la santé mentale") +
+  facet_wrap(vars(maladie), ncol = 2, scales = "free") +
+  theme(plot.title = element_text(size = 14, hjust = 0.5),
+        legend.position = "top",
+        panel.spacing.x=unit(0.5, "lines"),
+        panel.spacing.y=unit(0.5, "lines"))
+```
+
+La première chose que l'on remarque est que pour la plupart des sondés, la musique a un impact positif. Cet impact semble indépendant du niveau d'insomnie et d'OCD, mais semble cependant corrélé négativement au niveau d'anxiété (même si l'on pourrait émettre une réserve sur le fait qu'e'au contraire le nombre d'impact négatif plus neutre lui diminue avec l'intensité) et encore plus au niveau de dépression, avec 13% de personnes avec une dépression de niveau 10 considérant que la musique a un impact négatif. Cependant, il ne faut pas oublier que l'effet de la musique reste un terme assez vague, cela ne signifie pas par exemple qu'écouter de la musique aide à contrer l'insomnie. Et peut-être que ce que l'on observe est lié au temps d'écoute.
+
+Ainsi, il semblerait intéressant d'incorporer dans cette analyse le temps d'écoute. Pour ce faire, nous allons regarder la corrélation de cette dernière avec l'intensité de chaque trouble ainsi qu'avec l'effet de la musique auto-perçu.
+
+```{r, fig.height=5, fig.width=10}
+iqr_hours <- IQR(df$Hours.per.day, na.rm = TRUE)
+q3 <- quantile(df$Hours.per.day, 0.75, na.rm = TRUE)
+upper_limit <- q3 + 1.5 * iqr_hours
+df_hours <- df_maladie %>% filter(Hours.per.day <= 10)
+df_hours <- df_hours %>% mutate(Hours.per.day = round(Hours.per.day))
+
+ggplot(df_hours) +
+  aes(x = Hours.per.day, fill = Music.effects) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "RdYlGn", direction = -1, guide = guide_legend(reverse = TRUE)) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0,0)) +
+  labs (title = "Etude de la corélation entre le temps d'écoute journalier et l'effet de la musique auto-perçu",
+        x = "Temps d'écoute journalier (en heures)",
+        y = "Proportion des effets de la musique sur la santé mentale")
+```
+
+On remarque une légère tendance montrant une diminution de l'impacte négatif et une augmentation de l'impact positif avec l'augmentation du temps d'écoute, ce qui semblerait montrer qu'au global, plus on écoute de la musique, mieux l'on se porte. Mais comme cela ne montre qu'une corrélation, ce pourrait très bien être l'inverse : les personnes considérant que la musique a un impact négatif pourrait avoir tendance à en écouter moins justement. À noter que l'on a retirer du graphique les personnes avec un temps d'écoute supérieur à l'IQR, car il y avait quelques valeurs abbérentes comme 24h d'écoute par jour.
+
+Maintenant, vérifions si par exemple pour la dépression, les personnes présentant une haute intensité montre un temps d'écoute plus faible. Si oui, alors c'est uniquement temps d'écoute qui définirait l'impact de la musique. Si non (c'est-à-dire si on observe une corrélation positive), alors la dépression aurait bien un impact sur l'effet de la musique, plus fort que celui du temps d'écoute, car on observerait deux tendances qui sont opposées. Pour les autres maladie (à part peut-être l'anxiété), nous ne devrions pas observer de tendance.
+
+```{r, fig.height=10, fig.width=10}
+
+iqr_hours <- IQR(df$Hours.per.day, na.rm = TRUE)
+q3 <- quantile(df$Hours.per.day, 0.75, na.rm = TRUE)
+upper_limit <- q3 + 1.5 * iqr_hours
+df_hours_pivot <- df_maladie_pivot %>% filter(Hours.per.day <= 10)
+df_hours_pivot <- df_hours_pivot %>% mutate(Hours.per.day = round(Hours.per.day))
+
+df_hours_pivot$niveau <- factor(df_hours_pivot$niveau)
+
+ggplot(df_hours_pivot) +
+  aes(x = Hours.per.day, fill = niveau) +
+  geom_bar(position = "fill") +
+  scale_fill_brewer(palette = "RdYlGn", direction = -1) +
+  scale_y_continuous(labels = scales::percent_format(), expand = c(0,0)) +
+  labs (title = "Etude de la corélation entre le niveau d'un trouble mental et le temps d'écoute",
+        x = "Temps d'écoute journalier (en heures)",
+        y = "Proportion de l'intensité du trouble") +
+  facet_wrap(vars(maladie), ncol = 2, scales = "free") +
+  theme(plot.title = element_text(size = 14, hjust = 0.5),
+        legend.position = "top",
+        panel.spacing.x=unit(0.5, "lines"),
+        panel.spacing.y=unit(0.5, "lines"))
+```
+
+On remarque déjà que la colonne de 9h ne possède que 3 personnes, nous n'en tiendrons donc pas compte. Ensuite, comme attendu, l'anxiété, l'insomnie et l'OCD n'ont pas l'air de présenter de tendance particulière. Pour ce qui est de la dépression, c'est assez complexe de conclure avec notre échantillon. Il semblerait que la corrélation soit positive, ce qui serait donc opposée au graphique précédent, mettant en évidence une corrélation négatif de la dépression avec l'effet de la musique, qui serait donc plus fort que celui du temps d'écoute. Mais s'il n'y a pas de tendance, alors on aurait une incohérence. Ainsi, au moins l'une des deux corrélations trouvées précédement seraient fausses. Or, celle entre le temps d'écoute et l'effet de la musique semble assez solide, contrairement à celle entre la dépression et l'effet de la musique. On en conclurait donc que seule la première est possible.
