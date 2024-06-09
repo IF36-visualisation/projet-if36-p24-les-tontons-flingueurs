@@ -86,7 +86,7 @@ On retrouve réellement deux sous-groupes de features : les fréquences d'écout
 
 ## Analyse
 
-Il est important de noter que notre dataset est d'une part relativement petit, et d'autre part auto-déclaratif. Ainsi, les réponses peuvent être biaisées par la perception de la personne qui répond, et les conclusions que nous pourrons tirer ne seront pas nécessairement généralisables à l'ensemble de la population.
+Il est important de noter que notre dataset est d'une part relativement petit, et d'autre part auto-déclaratif. Ainsi, les réponses peuvent être biaisées par la perception de la personne qui répond, et les conclusions que nous pourrons tirer ne seront pas nécessairement généralisables à l'ensemble de la population. De plus, nous ne connaissons pas la répartition des répondants par pays ou par culture, ce qui peut également influencer les résultats de l'analyse.
 
 ```{r setup2, echo=FALSE, include=FALSE}
 library(ggplot2)
@@ -294,9 +294,9 @@ Enfin, nous constatons que la musique a un effet positif sur la majorité des r�
 
 #### **Analyse**
 
-Avant toute chose, puisque certaines personnes ont répondu qu'elles passaient plus de 18 heures par jour (ou moins de 30 minutes par jour) à écouter de la musique, nous avons décidé de gérer ces outliers à l'aide d'un écart interquartile.
+Avant toute chose, puisque certaines personnes ont répondu qu'elles passaient plus de 18 heures par jour (ou moins de 30 minutes par jour) à écouter de la musique, nous avons décidé de gérer ces outliers à l'aide d'un écart interquartile. Pour cela, nous avons calculé le premier et le troisième quartile ainsi que l'écart interquartile pour la variable `Hours per day`. Nous avons ensuite filtré les valeurs qui étaient à plus de 1.5 fois l'écart interquartile du premier et du troisième quartile. Cela nous a permis de conserver 693 valeurs sur les 736 initiales.
 
-Pour répondre à la question, nous avons décidé de diviser les participants en 4 groupes :
+Pour répondre à la question, nous avons décidé de diviser les participants en 4 groupes qui regroupent les différentes pratiques musicales possibles :
 
 1. Ceux qui ne jouent pas d'un instrument et ne composent pas de musique (441 personnes)
 2. Ceux qui jouent d'un instrument mais ne composent pas de musique (141 personnes)
