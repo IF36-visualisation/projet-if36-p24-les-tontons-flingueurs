@@ -19,7 +19,7 @@ library(readr)
 library(tibble)
 library(gridExtra)
 library("viridis")
-df <- read.csv("mxmh_survey_results.csv")
+df <- read.csv("data/mxmh_survey_results.csv")
 ```
 
 ```{r}

@@ -6,15 +6,25 @@ library(dplyr)
 
 server <- function(input, output) {
   set.seed(42)
+  medical_issue_to_word <- list("Depression" = c("de dépression", "la dépression", "de la dépression"),
+                                "Anxiety" = c("d'anxiété", "l'anxiété", "de l'anxiété"),
+                                "Insomnia" = c("d'insomnie", "l'insomnie", "de l'insomnie"),
+                                "OCD" = c("d'OCD", "les OCD", "des OCD"))
+  
+  df <- reactive({
+    return (read_csv("../data/mxmh_survey_results.csv", show_col_types = FALSE))
+  })
 
-  data <- reactive({
-    df <- read_csv("../data/mxmh_survey_results.csv", show_col_types = FALSE)
-    df <- df %>% filter(`Fav genre` %in% input$genres_medical_vs_fav_genre)
-    return (df %>% group_by(`Fav genre`, df[input$filter_column_for_fav_genre]))
+  df_fav_genre_by_filter <- reactive({
+    df_fav_genre_by_filter <- df() %>% filter(`Fav genre` %in% input$genres_medical_vs_fav_genre)
+    return (df_fav_genre_by_filter %>% group_by(`Fav genre`, df_fav_genre_by_filter[input$filter_column_for_fav_genre]))
   });
 
   output$fav_genre_by_filter <- renderPlot({
-    df_fav_genre_by_filter <- data() %>%
+    df_fav_genre_by_filter <- df() %>%
+      filter(`Fav genre` %in% input$genres_medical_vs_fav_genre)
+    df_fav_genre_by_filter <- df_fav_genre_by_filter %>%
+      group_by(`Fav genre`, df_fav_genre_by_filter[input$filter_column_for_fav_genre]) %>%
       summarise(nb_total = n()) %>%
       spread(key = input$filter_column_for_fav_genre, value = nb_total, fill = 0)
     for (i in 0:10) {
@@ -51,7 +61,6 @@ server <- function(input, output) {
                step8 = step8 / total * 100,
                step9 = step9 / total * 100,
                step10 = step10 / total * 100)
-    column_to_word <- list("Depression" = c("de dépression", "la dépression"), "Anxiety" = c("d'anxiété", "l'anxiété"), "Insomnia" = c("d'insomnie", "l'insomnie"), "OCD" = c("d'OCD", "les OCD"))
     return (ggplot(df_fav_genre_by_filter, aes(x = value)) +
               geom_col(aes(y = step10 + step9 + step8 + step7 + step6 + step5 + step4 + step3 + step2 + step1 + step0, fill = 10), position = "identity") +
               geom_col(aes(y = step9 + step8 + step7 + step6 + step5 + step4 + step3 + step2 + step1 + step0, fill = 9), position = "identity") +
@@ -64,9 +73,34 @@ server <- function(input, output) {
               geom_col(aes(y = step2 + step1 + step0, fill = 2), position = "identity") +
               geom_col(aes(y = step1 + step0, fill = 1), position = "identity") +
               geom_col(aes(y = step0, fill = 0), position = "identity") +
-              labs(x = "Style de musique préféré", y = paste("Proportion (%) de personnes par niveau", column_to_word[[input$filter_column_for_fav_genre]][1]),
-                   title = paste("Relation entre le style de musique préféré et", column_to_word[[input$filter_column_for_fav_genre]][2])) +
+              labs(x = "Style de musique préféré", y = paste("Proportion (%) de personnes par niveau", medical_issue_to_word[[input$filter_column_for_fav_genre]][1]),
+                   title = paste("Relation entre le style de musique préféré et", medical_issue_to_word[[input$filter_column_for_fav_genre]][2])) +
               theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-              scale_fill_viridis(name = paste("Niveau", column_to_word[[input$filter_column_for_fav_genre]][1]), direction = -1))
+              scale_fill_viridis(name = paste("Niveau", medical_issue_to_word[[input$filter_column_for_fav_genre]][1]), direction = -1))
+  })
+  
+  output$trouble_intensity_by_time <- renderPlot({
+    df_hours_pivot <- df() %>%
+      filter(`Music effects` != "" & !is.na(`Music effects`)) %>%
+      select(Anxiety, Depression, Insomnia, OCD, `Music effects`, `Hours per day`) %>%
+      pivot_longer(!c(`Music effects`, `Hours per day`), names_to = "maladie", values_to = "niveau") %>%
+      mutate(niveau = round(niveau / 10 * (input$vertical_bins_for_trouble_vs_time - 1)) / (input$vertical_bins_for_trouble_vs_time - 1) * 10) %>%
+      #mutate(niveau = round(niveau)) %>%
+      filter(input$time_range_for_trouble_vs_time[1] <= `Hours per day` & `Hours per day` <= input$time_range_for_trouble_vs_time[2]) %>%
+      mutate(`Hours per day` = round((`Hours per day` - input$time_range_for_trouble_vs_time[1]) * (input$horizontal_bins_for_trouble_vs_time - 1) / (input$time_range_for_trouble_vs_time[2] - input$time_range_for_trouble_vs_time[1])) * (input$time_range_for_trouble_vs_time[2] - input$time_range_for_trouble_vs_time[1]) / (input$horizontal_bins_for_trouble_vs_time - 1) + input$time_range_for_trouble_vs_time[1]) %>%
+      filter(maladie == input$trouble_for_trouble_vs_time)
+    df_hours_pivot$niveau <- factor(df_hours_pivot$niveau)
+    return (ggplot(df_hours_pivot) +
+              aes(x = `Hours per day`, fill = niveau) +
+              geom_bar(position = "fill") +
+              scale_fill_brewer(palette = "RdYlGn", direction = -1) +
+              scale_y_continuous(labels = scales::percent_format(), expand = c(0,0)) +
+              labs(title = paste("Etude de la corrélation entre le niveau", medical_issue_to_word[[input$trouble_for_trouble_vs_time]][1], "et le temps d'écoute"),
+                    x = "Temps d'écoute journalier (en heures)",
+                    y = paste("Proportion de l'intensité", medical_issue_to_word[[input$trouble_for_trouble_vs_time]][3])) +
+              theme(plot.title = element_text(size = 14, hjust = 0.5),
+                    legend.position = "top",
+                    panel.spacing.x=unit(0.5, "lines"),
+                    panel.spacing.y=unit(0.5, "lines")))
   })
 }
