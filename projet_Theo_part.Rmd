@@ -57,7 +57,7 @@ p <- df %>%
   count(style) %>%
   ggplot(aes(x = reorder(`Fav genre`, n), y = n, fill = frequency)) +
   geom_bar(stat = "identity", position = "dodge") +
-  labs(title = "Nombre de personnes écoutant leur style favoris et d'autres",
+  labs(title = "Nombre de personnes écoutant leur style favori et d'autres",
        x = "Style de musique favori",
        y = "Nombre de personnes") +
   theme_minimal() +
