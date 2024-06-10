@@ -765,3 +765,36 @@ Les autres styles, possédant de plus important échantillons, sont plus similai
 #### **Conclusion**
 
 Ainsi, il semble difficile de répondre oui à notre question, surtout que le peu de corrélation que l'on a pu percevoir semble plus être une implication de l'ambiance des morceaux plutôt que des styles à proprement parler. Mais une chose importante que nous n'avons pas pris en compte est le fait qu'avoir un style favori ne signifi pas forcément que l'on écoute beaucoup plus ce style que d'autres. Ce pourrait même parfois être l'inverse. De plus regarder la corélation entre la musique l'intensité des problèmes mentaux ne nous dit rien de si la musique à un impacte positif ou négatif, cela peut au mieux juste nous dit si certains style sont meilleurs pour la santé que d'autres. Il semble donc être plus intéressant de se poser la question "Les styles de musiques peuvent-t-il avoir un impact négatifs ou positifs sur les problèmes mentaux ?".
+
+### 5) Est-ce que l'âge est corrélé avec le temps d'écoute quotidien de musique ?
+
+Nous pouvons ensuite nous demander si l'âge est corrélé avec le temps d'écoute quotidien. On peut très bien imaginer que oui : il arrive souvent qu'on voit des personnes jeunes avec des écouteurs ou des casques dans les transports en commun, mais on imagine moins des personnes agées écouter de la musique à tout instant.
+
+```{r, echo=FALSE}
+hours_per_day_by_age <- df %>%
+  select(Age, `Hours per day`) %>%
+  group_by(Age) %>%
+  summarize(`Hours per day` = mean(`Hours per day`))
+ggplot(hours_per_day_by_age, aes(x = Age, y = `Hours per day`)) +
+  geom_point() +
+  geom_line() +
+  
+  labs(title = "Temps d'écoute journalier de musique en fonction de l'âge des répondants", x = "Âge", y = "Temps d'écoute journalier")
+```
+Le résultat est assez étonnant : l'écoute quotidienne de musique a tendance à baisser un peu avec l'âge, mais ce n'est pas aussi marqué que ce que nous aurions pu penser. Il y a évidemment des valeurs aberrantes sur ce graphique, notamment la personne de 89 ans qui écoute de la musique 24/24h. On peut aussi regarder faire des box plots, pour pouvoir mieux comprendre la répartition. Pour éviter de faire chaque box plot à partir de seulement quelques données, on va regrouper les personnes par tranche de 10.
+
+```{r, echo=FALSE}
+hours_per_day_by_age <- df %>%
+  select(Age, `Hours per day`) %>%
+  filter(!is.na(Age)) %>%
+  mutate(Age = floor(Age / 10) * 10)
+ggplot(hours_per_day_by_age, aes(x = factor(Age), y = `Hours per day`)) +
+  geom_boxplot(outlier.shape = NA) +
+  labs(title = "Temps d'écoute journalier de musique en fonction de l'âge des répondants", x = "Âge", y = "Temps d'écoute journalier")
+```
+
+Avec ce graphique, on comprend mieux la répartition des temps d'écoute. On peut voir que jusqu'à 50 ans, le temps d'écoute a tendance à baisser, puis il ré-augmente légèrement pendant la cinquantaine avant de lentement redescendre.
+
+### ** Conclusion **
+
+Finalement, la corrélation est moins forte que nous le pensions. On a cependant vu qu'il y a une petite tendance à la baisse. Il y a ensuite un nouveau pic d'écoutes aux alentours de 50 ans.
