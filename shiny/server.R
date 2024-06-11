@@ -3,6 +3,8 @@ library(tidyr)
 library(readr)
 library(viridis)
 library(dplyr)
+library(FactoMineR)
+library(factoextra)
 
 server <- function(input, output) {
   set.seed(42)
@@ -18,7 +20,26 @@ server <- function(input, output) {
   df_fav_genre_by_filter <- reactive({
     df_fav_genre_by_filter <- df() %>% filter(`Fav genre` %in% input$genres_medical_vs_fav_genre)
     return (df_fav_genre_by_filter %>% group_by(`Fav genre`, df_fav_genre_by_filter[input$filter_column_for_fav_genre]))
-  });
+  })
+
+  mca <- reactive({
+    df_frequency_formatted <- df()
+    frequency_columns <- colnames(df_frequency_formatted)[grep("^Frequency", colnames(df_frequency_formatted))]
+    df_frequency_formatted <- df_frequency_formatted[frequency_columns]
+    # On enlève le préfixe "Frequency" au nom des variables
+    remove_frequency_prefix <- function(col_name) {
+      col_name <- sub("^Frequency \\[", "", col_name)
+      sub("]$", "", col_name)
+    }
+    colnames(df_frequency_formatted) <- sapply(colnames(df_frequency_formatted), remove_frequency_prefix)
+    # On fait l'AFC
+    return (MCA(df_frequency_formatted, graph = FALSE))
+  })
+
+  mca_axis <- reactive({
+    return (c(as.integer(input$dimension_absisses_genres_correlation),
+              as.integer(input$dimension_ordinates_genres_correlation)))
+  })
 
   output$fav_genre_by_filter <- renderPlot({
     df_fav_genre_by_filter <- df() %>%
@@ -102,5 +123,27 @@ server <- function(input, output) {
                     legend.position = "top",
                     panel.spacing.x=unit(0.5, "lines"),
                     panel.spacing.y=unit(0.5, "lines")))
+  })
+  
+  output$genres_correlation <- renderPlot({
+    # We have to directly modify the MCA results
+    mca_modified <- mca()
+    mca_modified$var$eta2 <- mca_modified$var$eta2[, mca_axis()]
+    return (plot(fviz_mca_var(mca_modified, choice = "mca.cor", repel = TRUE, ggtheme = theme_minimal())))
+  })
+  
+  output$genres_correlation_quality <- renderPlot({
+    sum_values <- (mca()$var$eta2[,mca_axis()[1]] ^ 2 + mca()$var$eta2[,mca_axis()[2]] ^ 2) / rowSums(mca()$var$eta2 ^ 2)
+    if (mca_axis()[1] == mca_axis()[2]) {
+      sum_values <- sum_values / 2
+    }
+    data <- data.frame(style = names(sum_values), precision = sum_values)
+    data$style <- factor(data$style, levels = data$style[order(-data$precision)])
+    return (ggplot(data, aes(x = style, y = precision)) +
+      geom_bar(stat = "identity", fill = "skyblue") +
+      labs(title = "Qualité de représentation des styles", x = "Style de musique", y = "Qualité de représentation") +  # Add title and axis labels
+      theme_minimal() + # Apply a minimal theme
+      theme(axis.text.x = element_text(angle = 45, hjust = 1))  # Rotate x-axis labels by 90 degrees
+    )
   })
 }
