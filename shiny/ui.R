@@ -9,8 +9,8 @@ ui <- dashboardPage(
     dashboardHeader(title = "Genre musicaux et santé - Les tontons flingueurs - IF36"),
     dashboardSidebar(
       sidebarMenu(
-        menuItem("Présentation du dataset", tabName = "presentation", icon = icon("th", lib="glyphicon")),
-        menuItem("Corrélations entre musique et santé", tabName = "correlations", icon = icon("chart-column"))
+        menuItem("Corrélation entre les genres de musique et la santé", tabName = "correlation_genres_medical", icon = icon("th", lib="glyphicon")),
+        menuItem("Corrélations entre les différents styles de musique", tabName = "genres_correlations", icon = icon("chart-column"))
       )
     ),
     dashboardBody(
@@ -37,7 +37,7 @@ ui <- dashboardPage(
                    )
         ),
       tabItems(
-        tabItem(tabName="presentation",
+        tabItem(tabName="correlation_genres_medical",
                 box(title = "Relation entre le style de musique préféré et certains problèmes médicaux",
                     plotOutput("fav_genre_by_filter"),
                     selectInput("filter_column_for_fav_genre", "Sélectionner un problème médical", choices = list("Dépression" = "Depression", "Anxiété" = "Anxiety", "Insomnie" = "Insomnia", "OCD" = "OCD")),
@@ -51,7 +51,7 @@ ui <- dashboardPage(
                     sliderInput("vertical_bins_for_trouble_vs_time", "Nombre de bins (vertical)", min = 2, max = 21, value = 11)
                     )
                 ),
-        tabItem(tabName = "correlations",
+        tabItem(tabName = "genres_correlations",
                 box(title = "Corrélations entre les différents types de musique",
                     plotOutput("genres_correlation"),
                     div(class="dimension_selection_div",
