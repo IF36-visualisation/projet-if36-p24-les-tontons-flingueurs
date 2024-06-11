@@ -29,6 +29,10 @@ ui <- dashboardPage(
             gap: 2rem;
             justify-content : center;
           }
+          
+          #shiny-tab-correlations .col-sm-6 {
+            width: 100%;
+          }
           "
                    )
         ),
@@ -52,10 +56,10 @@ ui <- dashboardPage(
                     plotOutput("genres_correlation"),
                     div(class="dimension_selection_div",
                         selectInput("dimension_absisses_genres_correlation", "Sélectionnez la dimension à afficher en absisses", choices = list("Dimension 1" = "1", "Dimension 2" = "2", "Dimension 3" = "3", "Dimension 4" = "4", "Dimension 5" = "5")),
-                        selectInput("dimension_ordinates_genres_correlation", "Sélectionnez la dimension à afficher en ordonnées", choices = list("Dimension 1" = "1", "Dimension 2" = "2", "Dimension 3" = "3", "Dimension 4" = "4", "Dimension 5" = "5"))
-                        )
-                    ),
+                        selectInput("dimension_ordinates_genres_correlation", "Sélectionnez la dimension à afficher en ordonnées", choices = list("Dimension 1" = "1", "Dimension 2" = "2", "Dimension 3" = "3", "Dimension 4" = "4", "Dimension 5" = "5"), selected = "2")
+                        ),
                     plotOutput("genres_correlation_quality")
+                    )
                 )
         )
       )
