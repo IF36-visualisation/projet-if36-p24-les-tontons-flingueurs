@@ -778,8 +778,7 @@ hours_per_day_by_age <- df %>%
 ggplot(hours_per_day_by_age, aes(x = Age, y = `Hours per day`)) +
   geom_point() +
   geom_line() +
-  
-  labs(title = "Temps d'écoute journalier de musique en fonction de l'âge des répondants", x = "Âge", y = "Temps d'écoute journalier")
+  labs(title = "Temps moyen d'écoute journalière de musique en fonction de l'âge des répondants", x = "Âge", y = "Temps moyen d'écoute journalière")
 ```
 Le résultat est assez étonnant : l'écoute quotidienne de musique a tendance à baisser un peu avec l'âge, mais ce n'est pas aussi marqué que ce que nous aurions pu penser. Il y a évidemment des valeurs aberrantes sur ce graphique, notamment la personne de 89 ans qui écoute de la musique 24/24h. On peut aussi regarder faire des box plots, pour pouvoir mieux comprendre la répartition. Pour éviter de faire chaque box plot à partir de seulement quelques données, on va regrouper les personnes par tranche de 10.
 
