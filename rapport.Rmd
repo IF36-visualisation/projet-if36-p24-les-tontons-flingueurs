@@ -775,7 +775,7 @@ Ainsi, il semble difficile de répondre oui à notre question, surtout que le pe
 
 ### 5) La musique peut-elle avoir un impact négatif ou positif sur les problèmes mentaux en fonction du genre musical ?
 
-### Analyse
+#### **Analyse**
 
 Personnellement, les résultats de la question précédente me donnent peu d'espoir pour trouver une quelconque corrélation.
 
@@ -823,7 +823,7 @@ ggplot(df_freq_pivot) +
 
 <br>
 
-### Conclusion
+#### **Conclusion**
 
 En premier lieu, on remarque que la plupart des genres musicaux possèdent des proportions relativement équivalentes entre "Worsen", "No effet" et "Improve", ce qui tendrait à montrer qu'il n'y a pas de corrélation, au moins pour ces styles là. On a notament le Classique, le Jazz, le Lofi, le Rap, la Pop, le R&B, le Gospel, le Métal. D'autres semblent avoir un impact positif minime, comme le Rock, la K-pop ou le Folk. D'autres au contraire semblent avoir un impact négatif minime, comme le Latino, le Hip-Hop, et surtout les musiques de jeux-vidéos.
 
@@ -835,7 +835,7 @@ Mais il n'y a pas l'air d'y avoir de lien entre les styles qui auraient un impac
 
 ### 6) Le style de musique favori influence-t-il l'écoute d'autres styles de musique ?
 
-### Analyse
+#### **Analyse**
 
 Au début de la question précédente, nous avons fait l'hypothèse qu'une personne n'écoute pas seulement son style favori, voir même qu'il pouvait en écouter d'autres davantage. Ainsi, le style de musique favori influence-t-il l'écoute d'autres styles de musique ? La réponse devrait être positif, mais difficile d'estimer un ordre de grandeur. Pour cela, nous allons regarder la répartition des préférences musicales des répondants en fonction de leur style de musique favori.
 
@@ -972,13 +972,15 @@ ggplot(moyennes_long, aes(x = Fav.genre, y = moyenne, fill = frequence)) +
 
 On remarque tout de suite qu'en moyenne, il y a très peu de gens qui écoute davantage un style autre que leur style favori, variant entre 0 et 0.15 styles écoutés plus souvent. Mais ce chiffre grimpe tout de suite lorsqu'il s'agit de la même fréquence, ce qui correspond à ce que nous attendions. On remarque aussi qu'il existe une certaine disparité entre les différents, avec 4 styles favori à plus de 3, et 3 autres style en dessous de 1, alors qu'en plus ces deux groupes possèdent un nombre de personnes relativement important.
 
-### Conclusion
+#### **Conclusion**
 
 Cette analyse suggère que le style de musique favori a une influence sur les habitudes d'écoute d'autres genres musicaux. Cependant, il est important de noter que ces résultats sont basés sur des données auto-déclarées, et les conclusions doivent être interprétées avec prudence. D'autres facteurs tels que l'âge, le contexte culturel et les expériences individuelles peuvent également jouer un rôle dans les préférences musicales et les habitudes d'écoute.
 
 <br><br>
 
 ### 7) Est-ce que l'âge est corrélé avec le temps d'écoute quotidien de musique ?
+
+#### **Analyse**
 
 Nous pouvons ensuite nous demander si l'âge est corrélé avec le temps d'écoute quotidien. On peut très bien imaginer que oui : il arrive souvent qu'on voit des personnes jeunes avec des écouteurs ou des casques dans les transports en commun, mais on imagine moins des personnes agées écouter de la musique à tout instant.
 
@@ -1019,7 +1021,7 @@ ggplot(hours_per_day_by_age, aes(x = factor(Age), y = `Hours per day`)) +
 
 Avec ce graphique, on comprend mieux la répartition des temps d'écoute. On peut voir que jusqu'à 50 ans, le temps d'écoute a tendance à baisser, puis il ré-augmente légèrement pendant la cinquantaine avant de lentement redescendre.
 
-### Conclusion
+#### **Conclusion**
 
 Finalement, la corrélation est moins forte que nous le pensions. On a cependant vu qu'il y a une petite tendance à la baisse. Il y a ensuite un nouveau pic d'écoutes aux alentours de 50 ans.
 
@@ -1027,7 +1029,7 @@ Finalement, la corrélation est moins forte que nous le pensions. On a cependant
 
 ### 8) Existe-t-il une corrélation entre le niveau d'un trouble mental, l'effet de la musique auto-perçu, et le temps d'écoute ?
 
-### Analyse
+#### **Analyse**
 
 Posons-nous maintenant la question suivante : Existe-t-il une corrélation entre le niveau d'un trouble mental, l'effet de la musique auto-perçu, et le temps d'écoute ? Personnellement, je ne pense pas que le troube puisse être lié à l'impact de la musique ou au temps d'écoute, alors que je pense le temps d'écoute corrélé avec l'impact.  Pour vérifier cela, nous allons d'abords regarder par trouble la proportion de personnes qui considèrent l'impacte positif, négatif ou neutre par niveau d'intensité de chaque trouble mental.
 
@@ -1129,7 +1131,7 @@ ggplot(df_hours_pivot) +
 
 <br>
 
-### Conclusion
+#### **Conclusion**
 
 On remarque déjà que la colonne de 9h ne possède que 3 personnes, nous n'en tiendrons donc pas compte. Ensuite, comme attendu, l'anxiété, l'insomnie et l'OCD n'ont pas l'air de présenter de tendance particulière. Pour ce qui est de la dépression, c'est assez complexe de conclure avec notre échantillon. Il semblerait que la corrélation soit positive, ce qui serait donc opposée au graphique précédent, mettant en évidence une corrélation négatif de la dépression avec l'effet de la musique, qui serait donc plus fort que celui du temps d'écoute. Mais s'il n'y a pas de tendance, alors on aurait une incohérence. Ainsi, au moins l'une des deux corrélations trouvées précédement seraient fausses. Or, celle entre le temps d'écoute et l'effet de la musique semble assez solide, contrairement à celle entre la dépression et l'effet de la musique. On en conclurait donc que seule la première est possible.
 
