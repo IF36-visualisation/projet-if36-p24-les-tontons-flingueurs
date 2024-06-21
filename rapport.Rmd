@@ -379,6 +379,8 @@ On remarque que les personnes qui composent de la musique passent en moyenne plu
 
 Finalement, les personnes qui jouent et composent passent légèrement moins de temps à écouter de la musique que les personnes qui composent sans jouer d'un instrument. 
 
+<br>
+
 #### **Conclusion**
 
 Ainsi, on peut dire que jouer d'un instrument ou composer de la musique semble avoir une influence sur le temps passé à écouter de la musique. Il faudrait néanmoins un dataset avec plus d'échantillons pour confirmer cette hypothèse.
@@ -795,7 +797,7 @@ Ainsi, il semble difficile de répondre oui à notre question, surtout que le pe
 
 Personnellement, les résultats de la question précédente me donnent peu d'espoir pour trouver une quelconque corrélation.
 
-Pour répondre à cette question, étudions la possible corrélation entre la fréquence d'écoute d'un genre avec l'effet de la musique sur la santé mental, au moyen d'un barplot qui présente le dit effet en ordonnée ainsi que la proportion des fréquences d'écoutes en abscisse.
+Pour répondre à cette question, étudions la possible corrélation entre la fréquence d'écoute d'un genre avec l'effet de la musique sur la santé mentale, au moyen d'un barplot qui présente le dit effet en ordonnée ainsi que la proportion des fréquences d'écoutes en abscisse.
 
 Mais avant toute chose, deux choses sont à noter. La première est que 8 personnes n'ont rien indiqué quant à l'impact de la musique sur leur santé mentale, et qu'il a donc fallu retirer ces lignes du dataset pour ce graphique. La seconde est que le nombre de personne ayant répondu "Worsen" à l'impact sur la santé mentale s'élève à 17, ce qui est donc un petit échantillon.
 
@@ -841,7 +843,7 @@ ggplot(df_freq_pivot) +
 
 #### **Conclusion**
 
-En premier lieu, on remarque que la plupart des genres musicaux possèdent des proportions relativement équivalentes entre "Worsen", "No effet" et "Improve", ce qui tendrait à montrer qu'il n'y a pas de corrélation, au moins pour ces styles là. On a notament le Classique, le Jazz, le Lofi, le Rap, la Pop, le R&B, le Gospel, le Métal. D'autres semblent avoir un impact positif minime, comme le Rock, la K-pop ou le Folk. D'autres au contraire semblent avoir un impact négatif minime, comme le Latino, le Hip-Hop, et surtout les musiques de jeux-vidéos.
+En premier lieu, on remarque que la plupart des genres musicaux possèdent des proportions relativement équivalentes entre "Worsen", "No effet" et "Improve", ce qui tendrait à montrer qu'il n'y a pas de corrélation, au moins pour ces styles là. On a notament le Classique, le Jazz, le Lofi, le Rap, la Pop, le R&B, le Gospel et le Métal. D'autres semblent avoir un impact positif minime, comme le Rock, la K-pop ou le Folk. D'autres au contraire semblent avoir un impact négatif minime, comme le Latino, le Hip-Hop, et surtout les musiques de jeux-vidéos.
 
 Mais il n'y a pas l'air d'y avoir de lien entre les styles qui auraient un impact négatif, et de même pour ceux semblant avoir un impact positif. Ainsi, il est plus problable que ce soit des erreurs statistiques, sachant que la plupart des styles ne semblent pas avoir d'impact du tout. Et au final, le problème avec cette méthode est que l'effet de la musique sur la santé mentale est une variable globale, et non spécialisée à chaque genre musical. Ainsi, sa valeur est nécessairement multifactorielle et il est peu probable que par exemple, écouter des musiques de jeux vidéos suffisent seul à créer un impact négatif de la musique. De plus, ayant seulement un petit échantillon de "Worsen", ces résultats pourraient être invalidés.
 
@@ -1092,7 +1094,7 @@ ggplot(df_maladie_pivot) +
 
 <br>
 
-La première chose que l'on remarque est que pour la plupart des sondés, la musique a un impact positif. Cet impact semble indépendant du niveau d'insomnie et d'OCD, mais semble cependant légèrement corrélé négativement au niveau d'anxiété (même si l'on pourrait émettre une réserve sur le fait qu'e'au contraire le nombre d'impact négatif plus neutre lui diminue avec l'intensité) et davantage au niveau de dépression, avec 13% de personnes avec une dépression de niveau 10 considérant que la musique a un impact négatif. Cependant, il ne faut pas oublier que l'effet de la musique reste un terme assez vague, cela ne signifie pas par exemple qu'écouter de la musique aide à contrer l'insomnie. Et peut-être que ce que l'on observe est lié au temps d'écoute.
+La première chose que l'on remarque est que pour la plupart des sondés, la musique a un impact positif. Cet impact semble indépendant du niveau d'insomnie et d'OCD, mais semble cependant légèrement corrélé négativement au niveau d'anxiété (même si l'on pourrait émettre une réserve sur le fait qu'au contraire le nombre d'impact négatif plus neutre lui diminue avec l'intensité) et davantage au niveau de dépression, avec 13% de personnes avec une dépression de niveau 10 considérant que la musique a un impact négatif. Cependant, il ne faut pas oublier que l'effet de la musique reste un terme assez vague, cela ne signifie pas par exemple qu'écouter de la musique aide à contrer l'insomnie. Et peut-être que ce que l'on observe est lié au temps d'écoute.
 
 Ainsi, il semblerait intéressant d'incorporer dans cette analyse le temps d'écoute. Pour ce faire, nous allons regarder la corrélation de cette dernière avec l'intensité de chaque trouble ainsi qu'avec l'effet de la musique auto-perçu.
 
@@ -1201,7 +1203,7 @@ print(plot_heures_ecoute_platform)
 
 <br>
 
-On peut voir que les personnes utilisant Spotify semblent écouter plus de musique par jour que les personnes utilisant les autres plateformes de streaming. Les personnes utilisant Pandora semblent écouter moins de musique par jour que les autres ce qui pourrait s'expliquer par le fait que la clientèle de Pandora est moins encline à écouter de la musique en continu.
+On peut voir que les personnes utilisant Spotify semblent écouter plus de musique par jour que les personnes utilisant les autres plateformes de streaming. Les personnes utilisant Pandora semblent écouter moins de musique par jour que les autres ce qui pourrait s'expliquer par le faible nombre de répondant.
 Les personnes utilisant Apple Music, YouTube Music et d'autres plateformes de streaming semblent avoir des habitudes d'écoute similaires. Enfin contrairement à ce que l'on aurait pu penser, les personnes n'utilisant pas de service de streaming semblent écouter autant de musique que les autres.
 
 <br>
@@ -1248,7 +1250,7 @@ combined_plot_platform <- grid.arrange(plot_Depression_platform, plot_Anxiety_pl
 
 Si l'on regarde maintenant les scores de troubles mentaux en fonction de la plateforme de streaming principale, on peut voir que les scores de dépression, d'anxiété, d'insomnie et d'OCD sont relativement similaires pour les différentes plateformes de streaming. Cela suggère qu'il n'y a pas de différences notables dans les scores de troubles mentaux en fonction de la plateforme de streaming principale utilisée.
 
-On peut toutefois noter que les scores d'insomnie et d'OCD semblent plus faibles pour les personnes utilisant Pandora.
+On peut toutefois noter que les scores d'insomnie et d'OCD semblent plus faibles pour les personnes utilisant Pandora ce qui peut s'expliquer par le faible nombre de personnes utilisant cette plateforme de streaming dans notre échantillon.
 
 <br>
 
@@ -1356,7 +1358,7 @@ Cependant, il faudrait approfondir cette analyse en obtenant plus d'échantillon
 Le jeu de données ne nous a finalement pas appris beaucoup de choses sur les corrélations entre le genre de musique écouté et les différentes maladies ou problèmes mentaux que l’on a pu étudier. Il semble y en avoir assez peu.
 Sinon, le jeu de données nous a permis de confirmer certaines choses comme par exemple quelqu’un qui écoute du rap a aussi tendance à écouter du métal, et vice-versa, mais a aussi infirmé certaines choses que nous pensions, notamment que l’écoute de musique réduisait drastiquement avec l’âge.
 
-Cependant, il serait nécessaire d'approfondir notre sujet pour réellement tirer des conclusions. D’une part, il faudrait essayer de récolter plusieurs milliers de réponses avec une meilleure représentation (différentes cultures, âges, etc...). D’autre part, les réponses portant sur un sujet très sensible et étant auto-déclarées, il serait bien de réaliser une étude sociologique plus rigoureuse et scientifique avec des protocoles stricts.
+Cependant, il serait nécessaire d'approfondir notre sujet pour réellement tirer des conclusions. D’une part, il faudrait essayer de récolter plusieurs milliers de réponses avec une meilleure représentation sociale (différentes cultures, âges, etc...). D’autre part, les réponses portant sur un sujet très sensible et étant auto-déclarées, il serait bien de réaliser une étude plus rigoureuse et scientifique avec des protocoles stricts permettant l'obtention de résultats plus fiables.
 
 Concernant les problèmes qu’on a pu rencontrer, il y a tout d’abord les difficultés à concevoir la structure de données nécessaire au graphique que l’on souhaite réaliser. Il y a notamment toute la question de la corrélation entre le style favori d’une personne et l’intensité du trouble mental, qui, faute d’avoir pu trouver la bonne structure de données, s’est retrouvé à créer un graphique “manuellement” sur plus de 100 lignes. Également, nous avons eu beaucoup de difficultés pour gérer le grand nombre de styles de musique différents, qui rendait souvent l’interprétation des graphiques assez complexe à effectuer.
 
