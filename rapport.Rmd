@@ -1136,3 +1136,188 @@ ggplot(df_hours_pivot) +
 On remarque déjà que la colonne de 9h ne possède que 3 personnes, nous n'en tiendrons donc pas compte. Ensuite, comme attendu, l'anxiété, l'insomnie et l'OCD n'ont pas l'air de présenter de tendance particulière. Pour ce qui est de la dépression, c'est assez complexe de conclure avec notre échantillon. Il semblerait que la corrélation soit positive, ce qui serait donc opposée au graphique précédent, mettant en évidence une corrélation négatif de la dépression avec l'effet de la musique, qui serait donc plus fort que celui du temps d'écoute. Mais s'il n'y a pas de tendance, alors on aurait une incohérence. Ainsi, au moins l'une des deux corrélations trouvées précédement seraient fausses. Or, celle entre le temps d'écoute et l'effet de la musique semble assez solide, contrairement à celle entre la dépression et l'effet de la musique. On en conclurait donc que seule la première est possible.
 
 <br><br>
+
+### 9) Y a-t-il des différences notables dans les scores de troubles mentaux ou les heures d'écoute par jour en fonction de la plateforme de streaming principale utilisée (Primary streaming) ?
+
+<br>
+
+#### **Analyse**
+
+On peut maintenant se demander si les scores de troubles mentaux ou les heures d'écoute par jour varient en fonction de la plateforme de streaming principale utilisée. Pour répondre à cette question, nous allons d'abord examiner les différences dans les heures d'écoute par jour en fonction de la plateforme de streaming principale, puis nous examinerons les différences dans les scores de troubles mentaux en fonction de la plateforme de streaming principale.
+
+On peut émettre l'hypothèse que les personnes n'utilisant pas de service de streaming écoutent moins de musique que les autres, car elles n'ont pas accès à une bibliothèque musicale aussi étendue. 
+On pourrait également penser que la plateforme d'écoute n'a pas d'impact sur les scores de troubles mentaux car il n'y a pas de raison que l'utilisation d'une plateforme de streaming en particulier ait un impact sur la santé mentale.
+
+<br>
+
+```{r, echo=FALSE, fig.width=10, fig.height=5}
+# Heures d'écoutes en fonction de la plateforme de streaming
+
+df_outliers <- df %>% filter(!is.na(`Primary streaming service`))
+
+df_outliers_platform <- df_outliers %>% 
+  group_by(`Primary streaming service`) %>% 
+  summarise(mean_heures_ecoute = mean(`Hours per day`, na.rm = TRUE),
+            nb_heures_ecoute = n(),
+            mean_Depression = mean(Depression, na.rm = TRUE),
+            mean_Anxiety = mean(Anxiety, na.rm = TRUE),
+            mean_Insomnia = mean(Insomnia, na.rm = TRUE),
+            mean_OCD = mean(OCD, na.rm = TRUE))
+
+df_outliers_platform$`Primary streaming service` <- factor(df_outliers_platform$`Primary streaming service`, levels = c("Spotify", "Apple Music", "Pandora", "YouTube Music", "Other streaming service", "I do not use a streaming service."), labels = c("Spotify", "Apple Music", "Pandora", "YouTube Music", "Autre service de streaming", "Pas de service de streaming"))
+
+plot_heures_ecoute_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming service`, y = mean_heures_ecoute, fill = `Primary streaming service`)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Plateforme de streaming principale", y = "Heures d'écoute par jour", 
+       title = "Heures d'écoute par jour en fonction de la plateforme de streaming principale") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+print(plot_heures_ecoute_platform)
+```
+
+<br>
+On peut voir que les personnes utilisant Spotify semblent écouter plus de musique par jour que les personnes utilisant les autres plateformes de streaming. Les personnes utilisant Pandora semblent écouter moins de musique par jour que les autres ce qui pourrait s'expliquer par le fait que la clientèle de Pandora est moins encline à écouter de la musique en continu.
+Les personnes utilisant Apple Music, YouTube Music et d'autres plateformes de streaming semblent avoir des habitudes d'écoute similaires. Enfin contrairement à ce que l'on aurait pu penser, les personnes n'utilisant pas de service de streaming semblent écouter autant de musique que les autres.
+<br>
+
+```{r, echo=FALSE, fig.width=10, fig.height=20}
+# Scores de troubles mentaux en fonction de la plateforme de streaming
+
+plot_Depression_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming service`, y = mean_Depression, fill = `Primary streaming service`)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Plateforme de streaming principale", y = "Score moyen de dépression", 
+       title = "Score moyen de dépression en fonction de la plateforme de streaming principale") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_Anxiety_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming service`, y = mean_Anxiety, fill = `Primary streaming service`)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Plateforme de streaming principale", y = "Score moyen d'anxiété", 
+       title = "Score moyen d'anxiété en fonction de la plateforme de streaming principale") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_Insomnia_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming service`, y = mean_Insomnia, fill = `Primary streaming service`)) +
+  geom_bar(stat = "identity") +
+  labs(x = "Plateforme de streaming principale", y = "Score moyen d'insomnie", 
+       title = "Score moyen d'insomnie en fonction de la plateforme de streaming principale") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+plot_OCD_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming service`, y = mean_OCD, fill = `Primary streaming service`)) + 
+  geom_bar(stat = "identity") +
+  labs(x = "Plateforme de streaming principale", y = "Score moyen d'OCD", 
+       title = "Score moyen d'OCD en fonction de la plateforme de streaming principale") +
+  scale_fill_viridis_d() +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+combined_plot_platform <- grid.arrange(plot_Depression_platform, plot_Anxiety_platform, plot_Insomnia_platform, plot_OCD_platform, ncol = 1)
+```
+<br>
+
+Si l'on regarde maintenant les scores de troubles mentaux en fonction de la plateforme de streaming principale, on peut voir que les scores de dépression, d'anxiété, d'insomnie et d'OCD sont relativement similaires pour les différentes plateformes de streaming. Cela suggère qu'il n'y a pas de différences notables dans les scores de troubles mentaux en fonction de la plateforme de streaming principale utilisée.
+
+On peut toutefois noter que les scores d'insomnie et d'OCD semblent plus faibles pour les personnes utilisant Pandora.
+
+<br>
+
+#### **Conclusion**
+
+En conclusion, il semble que les personnes utilisant Spotify écoutent plus de musique par jour que les personnes utilisant les autres plateformes de streaming. Les scores de troubles mentaux ne semblent pas varier en fonction de la plateforme de streaming principale utilisée. 
+
+<br><br>
+
+### 10) Comment les scores d'anxiété, de dépression, d'insomnie et d'OCD sont-ils corrélés entre eux ?
+
+<br>
+
+#### **Analyse**
+
+Puisque les troubles mentaux sont souvent liés les uns aux autres, il est intéressant de voir comment les scores d'anxiété, de dépression, d'insomnie et d'OCD sont corrélés entre eux. Pour cela, nous allons calculer la corrélation entre ces scores et les visualiser à l'aide d'un graphique.
+
+<br>
+
+```{r, echo=FALSE}
+# Corrélation entre les scores de troubles mentaux
+
+df_correlation <- df %>% 
+  select(Depression, Anxiety, Insomnia, OCD) %>% 
+  cor()
+
+plot_correlation <- ggcorrplot(df_correlation, lab = TRUE, type = "lower", title = "Corrélation entre les scores de troubles mentaux")
+
+print(plot_correlation)
+```
+
+<br>
+
+En regardant le graphique ci-dessus, on peut remarquer qu'il n'y a pas de corrélation négative entre les scores de troubles mentaux, ce qui est cohérent car les troubles mentaux sont souvent liés les uns aux autres.
+
+On peut également voir que les scores de dépression, d'anxiété, d'insomnie et d'OCD sont pas forcément corrélés entre eux. En effet, les scores de dépression et d'anxiété sont plutôt corrélés positiment, ce qui est cohérent car ces deux troubles mentaux sont souvent liés. On remarque que les autres scores sont moins corrélés entre eux. On peut tout de même noter une corrélation positive entre les scores de dépression et d'insomnie et une autre entre les scores d'anxiété et d'OCD.
+
+<br>
+
+#### **Conclusion**
+
+Pour conclure, il semble que la dépression et l'anxiété ont la corrélation la plus élevée parmi les troubles mentaux étudiés ce qui indique selon nos résultats qu'une personne souffrant de dépression aurait plus de chances de souffrir d'anxiété et vice versa. Cependant, il est important de noter que la corrélation n'implique pas de causalité et que d'autres facteurs peuvent influencer les scores de troubles mentaux. Il serait donc intéressant d'intéresser à des études plus approfondies pour mieux comprendre les liens entre ces troubles mentaux.
+
+<br><br>
+
+### 11) Les différentes tranches d'âge écoutent-elles plus ou moins de musique en langue étrangère ?
+
+<br>
+
+#### **Analyse**
+
+Il est évident que la culture musicale varie d'une personne à une autre notamment en fonction de sa génération.
+Posons nous maintenant la question suivante : est-ce que l'âge influence le choix de la langue de la musique écoutée ?
+
+Pour y répondre, nous allons, à cause de la faible quantité de données, regrouper les participants et reprendre les tranches d'âge précédement définies et les comparer à la langue de la musique écoutée.
+
+On peut émettre l'hypothèse que les personnes plus jeunes écoutent plus de musique en langue étrangère que les personnes plus âgées. Pour vérifier cette hypothèse, nous allons comparer les heures d'écoute de musique en langue étrangère en fonction de la tranche d'âge.
+
+<br>
+
+```{r, echo=FALSE}
+# Musique en langue étrangère en fonction de la tranche d'âge
+df_age_by_foreign <- df %>% filter(!is.na(`Foreign languages`))
+
+df_child <- df_age_by_foreign %>% filter(Age < 18)
+df_young <- df_age_by_foreign %>% filter(Age >= 18 & Age < 31)
+df_adult <- df_age_by_foreign %>% filter(Age >= 31 & Age < 51)
+df_senior <- df_age_by_foreign %>% filter(Age >= 51)
+
+df_child$age_group <- "Enfant (-18 ans)"
+df_young$age_group <- "Jeune (18-30 ans)"
+df_adult$age_group <- "Adulte (31-50 ans)"
+df_senior$age_group <- "Senior (51+ ans)"
+
+df_age <- rbind(df_child, df_young, df_adult, df_senior)
+
+df_age <- df_age %>% group_by(age_group)
+
+df_age$age_group <- factor(df_age$age_group, levels = c("Enfant (-18 ans)", "Jeune (18-30 ans)", "Adulte (31-50 ans)", "Senior (51+ ans)"))
+
+ggplot(df_age, aes(x = age_group, fill = `Foreign languages`)) +
+  geom_bar(position = "fill") +
+  labs(x = "Tranche d'âge", y = "Pourcentage total de musique écoutée", 
+       title = "Pourcentage total de musique écoutée en langue étrangère en fonction de la tranche d'âge")
+```
+<br>
+
+On remarque sur le graphique ci-dessus que les jeunes entre 18 et 30 ans écoutent plus de musique en langue étrangère que les autres tranches d'âge. On observe également que les senior de plus de 51 ans écoutent moins de musique en langue étrangère que les autres tranches d'âge. Cependant, ce qui peut paraître surprenant, c'est que les enfants de moins de 18 ans écoutent moins de musique en langue étrangère que les adultes et les jeunes.
+<br>
+
+#### **Conclusion**
+
+Pour conclure, on peut dire que les jeunes écoutent plus de musique en langue étrangère que les autres tranches d'âge. Cela peut être dû à l'ouverture d'esprit des jeunes et à leur curiosité pour d'autres cultures. Les seniors, eux, écoutent moins de musique en langue étrangère que les autres tranches d'âge, ce qui peut être dû à leur attachement à leur culture et à leur langue maternelle. Les enfants écoutent moins de musique en langue étrangère que les adultes et les jeunes, ce qui peut être dû à l'influence familiale et à la musique écoutée par leurs parents.
+
+Cependant, il faudrait approfondir cette analyse en obtenant plus d'échantillons et en étudiant des tranches d'âge plus précises pour confirmer ces résultats.
+
+<br><br>
