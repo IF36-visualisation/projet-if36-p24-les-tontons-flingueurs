@@ -1321,3 +1321,41 @@ Pour conclure, on peut dire que les jeunes écoutent plus de musique en langue �
 Cependant, il faudrait approfondir cette analyse en obtenant plus d'échantillons et en étudiant des tranches d'âge plus précises pour confirmer ces résultats.
 
 <br><br>
+
+## **Conclusion générale**
+
+<br>
+
+Le jeu de données ne nous a finalement pas appris beaucoup de choses sur les corrélations entre le genre de musique écouté et les différentes maladies ou problèmes mentaux que l’on a pu étudier. Il semble y en avoir assez peu.
+Sinon, le jeu de données nous a permis de confirmer certaines choses, par exemple que quelqu’un qui écoute du rap a aussi tendance à écouter du métal, et vice-versa, mais a aussi infirmé certaines choses que nous pensions, notamment que l’écoute de musique réduisait drastiquement avec l’âge.
+
+Cependant, il serait nécessaire d'approfondir notre sujet pour réellement tirer des conclusions. D’une part, il faudrait essayer de récolter plusieurs milliers de réponses avec une meilleure représentation (différentes cultures, âges, …). D’autre part, les réponses portant sur un sujet très sensible et étant auto-déclarées, il serait bien de réaliser une étude sociologique plus rigoureuse et scientifique avec des protocoles stricts.
+
+Concernant les problèmes qu’on a pu rencontrer, il y a tout d’abord les difficultés à concevoir la structure de données nécessaire au graphique que l’on souhaite réaliser. Il y a notamment toute la question de la corrélation entre le style favori d’une personne et l’intensité du trouble mental, qui faute d’avoir pu trouver la bonne structure de données, s’est retrouvé à créer un graphique “manuellement” sur plus de 100 lignes. Également, nous avons eu beaucoup de difficultés pour gérer le grand nombre de styles de musique différents, qui rendaient souvent l’interprétation des graphiques assez complexe à effectuer.
+
+Pour terminer voici les retours de chaque membre du groupe : 
+
+Pierre-Emeric : Le projet m’a permis de bien comprendre le principe de R et également d’élargir mes capacités à choisir une visualisation adaptée à ce que l’on veut étudier. J’aurais cependant aimé avoir davantage de données, que ce soit de nouvelles colonnes, et surtout davantage de lignes.
+
+Noé : Grâce à ce projet, j’ai pu comprendre comment construire des graphiques. Pour compléter ce projet, j’aurais bien aimé faire plus de graphiques sur Tableau ou sur Power BI car j’ai vraiment apprécié utiliser Tableau pour faire quelques graphes lors de la présentation orale.
+
+Teddy : Le projet m’a permis de mieux comprendre le fonctionnement de R, et m’a permis de me rendre compte que faire une visualisation n’est pas toujours simple : manque de données, graphes illisibles, moins pertinents que prévu, … J’aurais aimé aborder le même projet, mais en Python, car je me dirige dans l’intelligence artificielle, où ce langage est très utilisé.
+
+Théo : Réaliser ce projet m’a permis de développer mes compétences en dataviz, et ainsi de réaliser des analyses relativement poussées sur un dataset. J’ai pu apprendre l’utilisation du langage R. Cependant, j’aurais aimé faire plus de Shiny car j’ai trouvé la techno très intéressante et le TD réalisé dessus m’a beaucoup intéressé.
+
+<br><br>
+
+## **Annexe**
+
+<br>
+
+### **Répartition des tâches**
+
+<br>
+
+Afin de réaliser notre projet, nous avions à l’origine comme idée que Pierre-Emeric s’intéresse aux liens entre les styles de musiques et les troubles mentaux, contrairement à Teddy qui lui devait regarder les liens entre les styles et les autres informations que nous avions. Noé quant à lui s’intéressait au temps d’écoute en fonction des activités de créations musicales. Théo finalement s’intéressait lui au jeu de données en lui-même. Nous nous sommes donc séparés le travail ainsi : 
+
+* Théo : Questions 1 et 6
+* Teddy : Questions 3, 7 et Shiny Dashboard
+* Pierre-Emeric : Questions 4, 5, 6 et 8
+* Noé : Questions 2, 9, 10, 11 et Tableau
