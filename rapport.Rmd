@@ -1,7 +1,7 @@
 ---
 title: "Projet IF36"
 author: "Les Tontons Flingueurs"
-date: "2024-06-12"
+date: "2024-06-24"
 output:
   html_document: default
 ---
@@ -17,6 +17,7 @@ Le dataset que nous avons choisi provient de [Kaggle](https://www.kaggle.com/dat
 
 Nous avons choisi ce dataset en raison de sa pertinence pour les analyses que nous voulons mener, tout en offrant la possibilité d'explorer les liens potentiels entre la santé mentale et la musique, étant donné notre intérêt marqué pour celle-ci.
 
+<br><br>
 
 ## Données
 ### Source
@@ -26,8 +27,12 @@ Le formulaire a été publié sur divers forums Reddit, serveurs Discord et plat
 
 Le formulaire était relativement bref afin que les répondants soient plus susceptibles de terminer le sondage. Les questions « plus difficiles » (telles que le BPM) sont restées facultatives pour la même raison.
 
+<br>
+
 ### Format
 Les données sont fournies dans un seul fichier au format CSV.
+
+<br>
 
 ### Description
 Ainsi, nous avons un total de **736** observations pour **33** features.
@@ -82,12 +87,13 @@ Et les 20 restantes sont de type string et sont ordonnables (et le nombre de ré
 
 On retrouve réellement deux sous-groupes de features : les fréquences d'écoutes et les troubles mentaux.
 
+<br>
 
 ## Analyse
 
 Il est important de noter que notre dataset est d'une part relativement petit, et d'autre part auto-déclaratif. Ainsi, les réponses peuvent être biaisées par la perception de la personne qui répond, et les conclusions que nous pourrons tirer ne seront pas nécessairement généralisables à l'ensemble de la population. De plus, nous ne connaissons pas la répartition des répondants par pays ou par culture, ce qui peut également influencer les résultats de l'analyse.
 
-<br><br>
+<br>
 
 ```{r setup2, echo=FALSE, include=FALSE}
 
@@ -116,6 +122,8 @@ remove_frequency_prefix <- function(dataframe) {
 ```
 
 ### 1) Quelles sont les données qui composent le dataset ?
+
+<br>
 
 #### **Analyse**
 
@@ -294,6 +302,8 @@ Enfin, nous constatons que la musique a un effet positif sur la majorité des r�
 
 ### 2) Est-ce que la pratique musicale (jouer d'un instrument ou composer de la musique) a une influence sur le temps passé à écouter de la musique ?
 
+<br>
+
 #### **Analyse**
 
 Avant toute chose, puisque certaines personnes ont répondu qu'elles passaient plus de 18 heures par jour (ou moins de 30 minutes par jour) à écouter de la musique, nous avons décidé de gérer ces outliers à l'aide d'un écart interquartile. Pour cela, nous avons calculé le premier et le troisième quartile ainsi que l'écart interquartile pour la variable `Hours per day`. Nous avons ensuite filtré les valeurs qui étaient à plus de 1.5 fois l'écart interquartile du premier et du troisième quartile. Cela nous a permis de conserver 693 valeurs sur les 736 initiales.
@@ -377,6 +387,8 @@ Ainsi, on peut dire que jouer d'un instrument ou composer de la musique semble a
 
 ### 3) Est-ce que l'écoute d'un certain style de musique est corrélée à celle des autres styles de musique ?
 
+<br>
+
 #### **Analyse**
 
 Ce dataset peut aussi nous permettre de nous demander si 2 styles de musiques sont compatibles entre-eux, c'est-à-dire si l'écoute de l'un est corrélée positivement (ou négativement) à l'écoute de l'autre. Pour cela, on peut représenter les coefficients de corrélation entre chaque style dans un tableau.
@@ -452,6 +464,8 @@ Comme on pouvait s'y attendre, il existe donc bien des corrélations entre les f
 <br><br>
 
 ### 4) Existe-t-il une corrélation entre le style favori d'une personne et sa santé mentale ?
+
+<br>
 
 #### **Analyse**
 
@@ -775,6 +789,8 @@ Ainsi, il semble difficile de répondre oui à notre question, surtout que le pe
 
 ### 5) La musique peut-elle avoir un impact négatif ou positif sur les problèmes mentaux en fonction du genre musical ?
 
+<br>
+
 #### **Analyse**
 
 Personnellement, les résultats de la question précédente me donnent peu d'espoir pour trouver une quelconque corrélation.
@@ -834,6 +850,8 @@ Mais il n'y a pas l'air d'y avoir de lien entre les styles qui auraient un impac
 <br><br>
 
 ### 6) Le style de musique favori influence-t-il l'écoute d'autres styles de musique ?
+
+<br>
 
 #### **Analyse**
 
@@ -980,6 +998,8 @@ Cette analyse suggère que le style de musique favori a une influence sur les ha
 
 ### 7) Est-ce que l'âge est corrélé avec le temps d'écoute quotidien de musique ?
 
+<br>
+
 #### **Analyse**
 
 Nous pouvons ensuite nous demander si l'âge est corrélé avec le temps d'écoute quotidien. On peut très bien imaginer que oui : il arrive souvent qu'on voit des personnes jeunes avec des écouteurs ou des casques dans les transports en commun, mais on imagine moins des personnes agées écouter de la musique à tout instant.
@@ -1028,6 +1048,8 @@ Finalement, la corrélation est moins forte que nous le pensions. On a cependant
 <br><br>
 
 ### 8) Existe-t-il une corrélation entre le niveau d'un trouble mental, l'effet de la musique auto-perçu, et le temps d'écoute ?
+
+<br>
 
 #### **Analyse**
 
@@ -1178,8 +1200,10 @@ print(plot_heures_ecoute_platform)
 ```
 
 <br>
+
 On peut voir que les personnes utilisant Spotify semblent écouter plus de musique par jour que les personnes utilisant les autres plateformes de streaming. Les personnes utilisant Pandora semblent écouter moins de musique par jour que les autres ce qui pourrait s'expliquer par le fait que la clientèle de Pandora est moins encline à écouter de la musique en continu.
 Les personnes utilisant Apple Music, YouTube Music et d'autres plateformes de streaming semblent avoir des habitudes d'écoute similaires. Enfin contrairement à ce que l'on aurait pu penser, les personnes n'utilisant pas de service de streaming semblent écouter autant de musique que les autres.
+
 <br>
 
 ```{r, echo=FALSE, fig.width=10, fig.height=20}
@@ -1219,6 +1243,7 @@ plot_OCD_platform <- ggplot(df_outliers_platform, aes(x = `Primary streaming ser
 
 combined_plot_platform <- grid.arrange(plot_Depression_platform, plot_Anxiety_platform, plot_Insomnia_platform, plot_OCD_platform, ncol = 1)
 ```
+
 <br>
 
 Si l'on regarde maintenant les scores de troubles mentaux en fonction de la plateforme de streaming principale, on peut voir que les scores de dépression, d'anxiété, d'insomnie et d'OCD sont relativement similaires pour les différentes plateformes de streaming. Cela suggère qu'il n'y a pas de différences notables dans les scores de troubles mentaux en fonction de la plateforme de streaming principale utilisée.
@@ -1309,9 +1334,11 @@ ggplot(df_age, aes(x = age_group, fill = `Foreign languages`)) +
   labs(x = "Tranche d'âge", y = "Pourcentage total de musique écoutée", 
        title = "Pourcentage total de musique écoutée en langue étrangère en fonction de la tranche d'âge")
 ```
+
 <br>
 
 On remarque sur le graphique ci-dessus que les jeunes entre 18 et 30 ans écoutent plus de musique en langue étrangère que les autres tranches d'âge. On observe également que les senior de plus de 51 ans écoutent moins de musique en langue étrangère que les autres tranches d'âge. Cependant, ce qui peut paraître surprenant, c'est que les enfants de moins de 18 ans écoutent moins de musique en langue étrangère que les adultes et les jeunes.
+
 <br>
 
 #### **Conclusion**
@@ -1327,11 +1354,11 @@ Cependant, il faudrait approfondir cette analyse en obtenant plus d'échantillon
 <br>
 
 Le jeu de données ne nous a finalement pas appris beaucoup de choses sur les corrélations entre le genre de musique écouté et les différentes maladies ou problèmes mentaux que l’on a pu étudier. Il semble y en avoir assez peu.
-Sinon, le jeu de données nous a permis de confirmer certaines choses, par exemple que quelqu’un qui écoute du rap a aussi tendance à écouter du métal, et vice-versa, mais a aussi infirmé certaines choses que nous pensions, notamment que l’écoute de musique réduisait drastiquement avec l’âge.
+Sinon, le jeu de données nous a permis de confirmer certaines choses comme par exemple quelqu’un qui écoute du rap a aussi tendance à écouter du métal, et vice-versa, mais a aussi infirmé certaines choses que nous pensions, notamment que l’écoute de musique réduisait drastiquement avec l’âge.
 
-Cependant, il serait nécessaire d'approfondir notre sujet pour réellement tirer des conclusions. D’une part, il faudrait essayer de récolter plusieurs milliers de réponses avec une meilleure représentation (différentes cultures, âges, …). D’autre part, les réponses portant sur un sujet très sensible et étant auto-déclarées, il serait bien de réaliser une étude sociologique plus rigoureuse et scientifique avec des protocoles stricts.
+Cependant, il serait nécessaire d'approfondir notre sujet pour réellement tirer des conclusions. D’une part, il faudrait essayer de récolter plusieurs milliers de réponses avec une meilleure représentation (différentes cultures, âges, etc...). D’autre part, les réponses portant sur un sujet très sensible et étant auto-déclarées, il serait bien de réaliser une étude sociologique plus rigoureuse et scientifique avec des protocoles stricts.
 
-Concernant les problèmes qu’on a pu rencontrer, il y a tout d’abord les difficultés à concevoir la structure de données nécessaire au graphique que l’on souhaite réaliser. Il y a notamment toute la question de la corrélation entre le style favori d’une personne et l’intensité du trouble mental, qui faute d’avoir pu trouver la bonne structure de données, s’est retrouvé à créer un graphique “manuellement” sur plus de 100 lignes. Également, nous avons eu beaucoup de difficultés pour gérer le grand nombre de styles de musique différents, qui rendaient souvent l’interprétation des graphiques assez complexe à effectuer.
+Concernant les problèmes qu’on a pu rencontrer, il y a tout d’abord les difficultés à concevoir la structure de données nécessaire au graphique que l’on souhaite réaliser. Il y a notamment toute la question de la corrélation entre le style favori d’une personne et l’intensité du trouble mental, qui, faute d’avoir pu trouver la bonne structure de données, s’est retrouvé à créer un graphique “manuellement” sur plus de 100 lignes. Également, nous avons eu beaucoup de difficultés pour gérer le grand nombre de styles de musique différents, qui rendait souvent l’interprétation des graphiques assez complexe à effectuer.
 
 Pour terminer voici les retours de chaque membre du groupe : 
 
@@ -1347,15 +1374,15 @@ Théo : Réaliser ce projet m’a permis de développer mes compétences en data
 
 ## **Annexe**
 
-<br>
-
 ### **Répartition des tâches**
 
 <br>
 
-Afin de réaliser notre projet, nous avions à l’origine comme idée que Pierre-Emeric s’intéresse aux liens entre les styles de musiques et les troubles mentaux, contrairement à Teddy qui lui devait regarder les liens entre les styles et les autres informations que nous avions. Noé quant à lui s’intéressait au temps d’écoute en fonction des activités de créations musicales. Théo finalement s’intéressait lui au jeu de données en lui-même. Nous nous sommes donc séparés le travail ainsi : 
+Afin de réaliser notre projet, nous avions à l’origine comme idée que Pierre-Emeric s’intéresse aux liens entre les styles de musiques et les troubles mentaux, contrairement à Teddy qui lui devait regarder les liens entre les styles et les autres informations que nous avions. Noé quant à lui s’intéressait au temps d’écoute en fonction des activités de créations musicales. Théo finalement s’intéressait lui au jeu de données en lui-même. Nous nous sommes donc séparé le travail ainsi : 
 
 * Théo : Questions 1 et 6
 * Teddy : Questions 3, 7 et Shiny Dashboard
 * Pierre-Emeric : Questions 4, 5, 6 et 8
 * Noé : Questions 2, 9, 10, 11 et Tableau
+
+<br>
