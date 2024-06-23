@@ -461,6 +461,9 @@ On voit donc bien qu'on peut grouper certains styles. Par exemple, les personnes
 
 Ce graphique ne doit cependant que nous donner des pistes de recherche, il ne faut pas tirer de conclusions avec : il n'explique que 13.1% de la variance, il n'est donc pas du tout exact. Certaines variables sont moins bien représentées que d'autres. En effet, pour avoir un graphe parfait, il faudrait le représenter dans un nombre de dimensions élevées. C'est évidemment impossible (sans compromettre la qualité de la lecture), on réduit donc l'espace à deux dimensions. Mais cela nous fait perdre des informations, et pour certaines variables (Gospel, Classical, Video game music), beaucoup d'informations seront perdues, tandis que pour d'autres (Hip hop, R&B, Rap), la majorité seront conservées. Le deuxième graphique montre donc cela. Il n'est donc pas vraiment possible de tirer de conclusions avec uniquement ce graphique, mais il est tout de même très efficace pour nous donner une idée de la corrélation entre chaque variable.
 
+Pour pouvoir explorer les autres dimensions, nous avons fait un graphe sur Shiny :
+![](images/Screenshot_2024-06-24-01-25-23_1920x1080.png)
+
 Comme on pouvait s'y attendre, il existe donc bien des corrélations entre les fréquence d'écoute des différents styles de musique. Le meilleur exemple est celle du rap et celle du hip hop, avec un coefficient de corrélation de 0.78.
 
 <br><br>
@@ -782,6 +785,9 @@ Les styles qui se démarquent le mieux sont comme attendu ceux qui possèdent le
 Ensuite, le Gospel est le style dont les résultats varient le plus d'un problème mental à un autre, étant parfois très corrélé positivement comme avec l'OCD, et parfois très négativement comme avec l'insomnie, sans doute une conséquence de son échantillon de 6 personnes.
 
 Les autres styles, possédant de plus important échantillons, sont plus similaires les uns aux autres. Il n'y pas vraiment de styles qui se démarquent franchement, puisque souvent par exemple si un style possède deux fois plus de niveau 1 que de niveau 2 qu'un autre, ils auront au final la même proportion de personnes avec un niveau inférieur à 2, comme le classique et le country pour la dépression. Ceci pourrait simplement s'expliquer par le fait qu'une division d'un problème mental en 11 niveaux différents est peu pertinent pour une auto-évaluation, l'Homme ayant du mal à voir une différence entre deux niveaux côte-à-côte.
+
+Nous pouvons réduire rendre les graphiques moins spacieux et rendre les informations qui nous intéressent plus lisibles avec un graphe Shiny :
+![](images/Screenshot_2024-06-24-01-31-35_1920x1080.png)
 
 #### **Conclusion**
 
@@ -1152,6 +1158,11 @@ ggplot(df_hours_pivot) +
         panel.spacing.y=unit(0.5, "lines"))
 
 ```
+
+<br>
+
+On peut ici aussi créer un graphe interractif pour se focaliser sur les informations qui nous intéressent. On pourrait par exemple ne pas vouloir se limiter à 10h d'écoute au maximum, ou vouloir moins de couleurs différentes en arrondissant plus les valeurs des troubles.
+![](images/Screenshot_2024-06-24-01-38-18_1920x1080.png)
 
 <br>
 
