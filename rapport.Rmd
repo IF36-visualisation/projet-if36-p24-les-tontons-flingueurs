@@ -1172,7 +1172,7 @@ On remarque déjà que la colonne de 9h ne possède que 3 personnes, nous n'en t
 
 <br><br>
 
-### 9) Y a-t-il des différences notables dans les scores de troubles mentaux ou les heures d'écoute par jour en fonction de la plateforme de streaming principale utilisée (Primary streaming) ?
+### 9) Y a-t-il des différences notables dans les scores de troubles mentaux ou les heures d'écoute par jour en fonction de la plateforme de streaming principale utilisée ?
 
 <br>
 
